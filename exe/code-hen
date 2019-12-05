@@ -2,4 +2,8 @@
 
 require "code_hen/cli"
 
-CodeHen::CLI.run
+begin
+  CodeHen::CLI.run
+rescue CodeHen::Error, CodeHen::Parser::Error => error
+  abort "ERROR: #{error.message}"
+end

@@ -100,7 +100,8 @@ RSpec.describe CodeHen::Parser do
       Options:
               --fizz FIZZ                  blah
           -f, --foo-bar FOO_BAR
-          -h, --help
+          -v, --version                    show version and exit
+          -h, --help                       show this help and exit
     EOS
   end
 

@@ -8,12 +8,11 @@ invoke do
 
   FileUtils.mkdir_p(dirname)
   File.write(filename, <<~RUBY)
-    parse do |o|
-      o.banner = "print a message"
-      o.string "-m", "--message"
+    parse do
+      argument :message, required: true
     end
 
-    generate do
+    invoke do
       puts message
     end
   RUBY
@@ -25,6 +24,6 @@ helpers do
   end
 
   def filename
-    File.join(dirname, "")
+    File.join(dirname, "generator.rb")
   end
 end
