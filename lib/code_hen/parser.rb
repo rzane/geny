@@ -8,7 +8,7 @@ module CodeHen
 
     def initialize
       @usage = $0
-      @version = "0.0.0"
+      @version = nil
       @description = nil
       @arguments = []
       @options = []
@@ -101,9 +101,11 @@ module CodeHen
           end
         end
 
-        parser.on_tail("-v", "--version", "show version and exit") do
-          puts @version
-          exit
+        if @version
+          parser.on_tail("-v", "--version", "show version and exit") do
+            puts @version
+            exit
+          end
         end
 
         parser.on_tail("-h", "--help", "show this help and exit") do

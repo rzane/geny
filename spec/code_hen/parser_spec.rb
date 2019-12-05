@@ -83,6 +83,7 @@ RSpec.describe CodeHen::Parser do
   it "generates help" do
     parser.usage "example"
     parser.example "$ example foo"
+    parser.version "0.0.0"
     parser.argument :jint, desc: "do a thing"
     parser.option :fizz, required: true, desc: "blah"
     parser.option :foo_bar, aliases: ["-f"]
