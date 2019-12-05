@@ -5,9 +5,7 @@ require "code_hen/version"
 
 module CodeHen
   class CLI
-    LOAD_PATH = [File.expand_path("../generators", __dir__)]
-
-    def initialize(version: CodeHen::VERSION, load_path: LOAD_PATH)
+    def initialize(version: CodeHen::VERSION, load_path: CodeHen.load_path)
       @version = version
       @load_path = load_path
     end
