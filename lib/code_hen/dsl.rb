@@ -2,13 +2,17 @@ module CodeHen
   class DSL
     def initialize
       @helpers = []
-      @parse = proc {}
       @invoke = proc { warn "I don't know what to do!" }
     end
 
+    def parser
+      @parser ||= Parser.new do |o|
+        o.option :output, aliases: ["-o"], type: :pathname, default: Pathname.pwd
+      end
+    end
+
     def parse(&block)
-      @parse = block if block_given?
-      @parse
+      parser.instance_eval(&block)
     end
 
     def invoke(&block)

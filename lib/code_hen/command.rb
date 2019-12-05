@@ -1,7 +1,6 @@
 require "pathname"
 require "code_hen/dsl"
 require "code_hen/error"
-require "code_hen/parser"
 require "code_hen/generator"
 
 module CodeHen
@@ -29,18 +28,17 @@ module CodeHen
       @file = file
       @load_path = load_path
       @dsl = DSL.new
-      @parser = Parser.new
       @loaded = false
     end
 
     def description
       load! unless loaded?
-      parser.description
+      dsl.parser.description
     end
 
     def run(argv)
       load! unless loaded?
-      invoke parser.parse(argv)
+      invoke dsl.parser.parse(argv)
     end
 
     def invoke(context)
@@ -75,7 +73,6 @@ module CodeHen
       end
 
       dsl.instance_eval(input)
-      parser.instance_eval(&dsl.parse)
       true
     end
 
