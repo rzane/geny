@@ -1,10 +1,11 @@
 require "slop"
 require "code_hen"
 require "code_hen/dsl"
+require "code_hen/context"
 
 module CodeHen
   class CLI
-    MANIFEST = "code_hen.rb"
+    MANIFEST = "generate.rb"
     ROOTS = [File.expand_path("../generators", __dir__)]
 
     def self.run(*args)
@@ -12,30 +13,20 @@ module CodeHen
     end
 
     def initialize(roots: ROOTS, argv: ARGV, version: CodeHen::VERSION)
-      @dsl = DSL.new
       @argv = argv
       @roots = roots
       @version = version
     end
 
     def run
-      if @argv.empty?
-        abort "You need to provide the name of a generator."
-      end
+      abort "You need to provide the name of a generator." if name.nil?
+      abort "I wasn't able to find a generator named '#{name}'" if manifest.nil?
 
-      name, *args = @argv
-      path = name.split(":")
-      manifests = @roots.map { |root| File.join(root, *path, MANIFEST) }
-      manifest = manifests.find { |manifest| File.exist?(manifest) }
-
-      if manifest.nil?
-        abort "I wasn't able to find a generator named '#{name}'."
-      end
-
-      @dsl.instance_eval File.read(manifest)
+      dsl = DSL.new
+      dsl.instance_eval File.read(manifest)
 
       opts = Slop.parse(args) do |o|
-        @dsl.parse.call(o)
+        dsl.parse.call(o)
 
         o.on("-v", "--version", "show the version and exit") do
           puts @version
@@ -48,11 +39,39 @@ module CodeHen
         end
       end
 
-      @dsl.helpers.each do |helper|
-        opts.extend helper
+      context = Context.new(opts.to_hash)
+      dsl.helpers.each do |helper|
+        context.extend helper
       end
+      context.instance_eval(&dsl.generate)
+    end
 
-      opts.instance_eval(&@dsl.generate)
+    private
+
+    def name
+      @argv.first
+    end
+
+    def path
+    end
+
+    def args
+      @argv[1..-1]
+    end
+
+    def manifest_locations
+      path = name.split(":")
+
+      @roots.flat_map { |root|
+        [
+          File.join(root, *path, MANIFEST),
+          File.join(root, *path[0..-2], "#{path[-1]}.#{MANIFEST}")
+        ]
+      }
+    end
+
+    def manifest
+      @manifest ||= manifest_locations.find { |m| File.exist?(m) }
     end
   end
 end

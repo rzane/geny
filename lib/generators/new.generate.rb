@@ -1,11 +1,12 @@
 parse do |o|
-  o.string "--name", "name for your generator"
+  o.string "--name", "name for your generator", required: true
+  o.string "--output", "output directory", default: Dir.pwd
 end
 
 generate do
   require "fileutils"
 
-  dir = File.join(*name.split(":"))
+  dir = File.join(output, *name.split(":"))
   file = File.join(dir, "code_hen.rb")
 
   FileUtils.mkdir_p(dir)
