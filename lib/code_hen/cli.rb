@@ -1,4 +1,5 @@
 require "code_hen"
+require "code_hen/ui"
 require "code_hen/parser"
 require "code_hen/command"
 require "code_hen/version"
@@ -32,10 +33,18 @@ module CodeHen
     def show_all_commands
       commands = Command.scan(load_path: @load_path)
 
-      puts "Commands:\n"
+      ui.heading("Generators")
+
       commands.each do |command|
-        puts "  #{command.name}#{command.description&.rjust(38)}"
+        name = ui.color.cyan(command.name)
+        desc = command.description&.rjust(38)
+        desc = ui.color.dim(desc) if desc
+        ui.say "#{name}#{desc}"
       end
+    end
+
+    def ui
+      @ui ||= UI.new
     end
   end
 end

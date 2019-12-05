@@ -31,9 +31,9 @@ RSpec.describe CodeHen::CLI do
     EOS
 
     expect { cli.run([]) }.to output(<<~EOS).to_stdout
-      Commands:
-        foo
-        bar:buzz
+      == Generators
+      foo
+      bar:buzz                                 hello
     EOS
   end
 
@@ -46,5 +46,4 @@ RSpec.describe CodeHen::CLI do
     FileUtils.mkdir_p File.dirname(path)
     File.write(path, content)
   end
-
 end
