@@ -1,4 +1,3 @@
-require "slop"
 require "code_hen/version"
 
 module CodeHen

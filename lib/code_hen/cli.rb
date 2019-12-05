@@ -1,9 +1,11 @@
+require "slop"
+require "code_hen"
 require "code_hen/dsl"
 
 module CodeHen
   class CLI
     MANIFEST = "code_hen.rb"
-    ROOTS = [File.join(__dir__, "generators")]
+    ROOTS = [File.expand_path("../generators", __dir__)]
 
     def self.run(*args)
       new(*args).run
