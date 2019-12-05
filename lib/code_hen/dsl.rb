@@ -1,3 +1,6 @@
+require "pathname"
+require "code_hen/parser"
+
 module CodeHen
   class DSL
     def initialize

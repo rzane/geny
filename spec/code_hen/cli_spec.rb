@@ -2,9 +2,15 @@ require "tmpdir"
 require "code_hen/cli"
 
 RSpec.describe CodeHen::CLI do
-  let(:tmp)     { Dir.mktmpdir }
-  after(:each)  { FileUtils.rm_rf(tmp) }
-  subject(:cli) { CodeHen::CLI.new(load_path: [tmp]) }
+  include TemporaryFileHelpers
+
+  let(:registry) {
+    CodeHen::Registry.new(load_path: [tmp])
+  }
+
+  subject(:cli) {
+    CodeHen::CLI.new(registry: registry)
+  }
 
   it "parses and runs a shallow generator" do
     write "foo/generator.rb", <<~EOS
@@ -35,15 +41,5 @@ RSpec.describe CodeHen::CLI do
       foo
       bar:buzz                                 hello
     EOS
-  end
-
-  def join(filename)
-    File.join(tmp, filename)
-  end
-
-  def write(filename, content = "")
-    path = File.join(tmp, filename)
-    FileUtils.mkdir_p File.dirname(path)
-    File.write(path, content)
   end
 end
