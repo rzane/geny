@@ -1,11 +1,11 @@
-require "slop"
 require "code_hen"
 require "code_hen/dsl"
+require "code_hen/parser"
 require "code_hen/generator"
 
 module CodeHen
   class CLI
-    MANIFEST = "generate.rb"
+    MANIFEST = "generator.rb"
     ROOTS = [File.expand_path("../generators", __dir__)]
 
     def self.run(*args)
@@ -25,24 +25,12 @@ module CodeHen
       dsl = DSL.new
       dsl.instance_eval File.read(manifest)
 
-      opts = Slop.parse(args) do |o|
-        dsl.parse.call(o)
+      parser = Parser.new
+      parser.instance_eval(&dsl.parse)
 
-        o.on("-v", "--version", "show the version and exit") do
-          puts @version
-          exit
-        end
-
-        o.on("-h", "--help", "show this help and exit") do
-          puts o
-          exit
-        end
-      end
-
-      generator = Generator.new(context: opts.to_hash)
-      dsl.helpers.each do |helper|
-        generator.extend helper
-      end
+      context = parser.parse(@argv)
+      generator = Generator.new(context: context)
+      dsl.helpers.each { |h| generator.extend(h) }
       generator.instance_eval(&dsl.invoke)
     end
 
@@ -53,6 +41,7 @@ module CodeHen
     end
 
     def path
+      name.split(":")
     end
 
     def args
@@ -60,14 +49,7 @@ module CodeHen
     end
 
     def manifest_locations
-      path = name.split(":")
-
-      @roots.flat_map { |root|
-        [
-          File.join(root, *path, MANIFEST),
-          File.join(root, *path[0..-2], "#{path[-1]}.#{MANIFEST}")
-        ]
-      }
+      @roots.map { |root| File.join(root, *path, MANIFEST) }
     end
 
     def manifest
