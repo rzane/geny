@@ -3,7 +3,8 @@
 require "code_hen/cli"
 
 begin
-  CodeHen::CLI.run
+  cli = CodeHen::CLI.new
+  cli.run(ARGV)
 rescue CodeHen::Error, CodeHen::Parser::Error => error
   abort "ERROR: #{error.message}"
 end
