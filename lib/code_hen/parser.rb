@@ -4,6 +4,8 @@ require "code_hen/option"
 
 module CodeHen
   class Parser
+    attr_reader :examples, :arguments, :options
+
     def initialize
       @usage = $0
       @version = nil
@@ -13,16 +15,19 @@ module CodeHen
       @examples = []
     end
 
-    def usage(usage)
-      @usage = usage
+    def usage(usage = nil)
+      @usage = usage if usage
+      @usage
     end
 
-    def version(version)
-      @version = version
+    def version(version = nil)
+      @version = version if version
+      @version
     end
 
-    def description(description)
-      @description = description
+    def description(description = nil)
+      @description = description if description
+      @description
     end
 
     def example(example)
@@ -54,7 +59,7 @@ module CodeHen
     private
 
     def backfill_arguments(values:, argv:)
-      argv.zip(@arguments).each do |value, arg|
+      argv.zip(arguments).each do |value, arg|
         if arg.nil?
           values[:unused_arguments] << value
         else
@@ -64,7 +69,7 @@ module CodeHen
     end
 
     def collect_default_values
-      (@arguments + @options).reduce(unused_arguments: []) do |acc, opt|
+      (arguments + options).reduce(unused_arguments: []) do |acc, opt|
         acc[opt.name] = opt.default
         acc
       end
@@ -72,36 +77,36 @@ module CodeHen
 
     def build_parser(values:)
       OptionParser.new "Usage:\n    #{@usage}" do |parser|
-        unless @description.nil?
-          parser.separator "\nDescription:\n    #{@description}"
+        unless description.nil?
+          parser.separator "\nDescription:\n    #{description}"
         end
 
-        unless @examples.empty?
+        unless examples.empty?
           parser.separator "\nExamples:"
-          @examples.each do |example|
+          examples.each do |example|
             parser.separator "    #{example}"
           end
         end
 
-        unless @arguments.empty?
+        unless arguments.empty?
           parser.separator "\nArguments:"
-          @arguments.each do |arg|
+          arguments.each do |arg|
             parser.separator "    #{arg.label}#{arg.desc.rjust(39)}"
           end
         end
 
-        unless @options.empty?
+        unless options.empty?
           parser.separator "\nOptions:"
-          @options.each do |opt|
+          options.each do |opt|
             parser.on(*opt.parser_options) do |value|
               values[opt.name] = opt.coerce(value)
             end
           end
         end
 
-        if @version
+        if version
           parser.on_tail("-v", "--version", "show version and exit") do
-            puts @version
+            puts version
             exit
           end
         end
@@ -114,8 +119,8 @@ module CodeHen
     end
 
     def validate!(values:)
-      args = detect_missing_options(values, @arguments).map(&:label)
-      opts = detect_missing_options(values, @options).map(&:flag)
+      args = detect_missing_options(values, arguments).map(&:label)
+      opts = detect_missing_options(values, options).map(&:flag)
 
       unless args.empty?
         raise ParserError, "Missing required arguments: #{args.join(", ")}"

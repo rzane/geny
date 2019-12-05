@@ -2,8 +2,8 @@ module CodeHen
   class DSL
     def initialize
       @helpers = []
-      @parse = ->(opts){ opts }
-      @invoke = -> { warn "I don't know what to do!" }
+      @parse = proc {}
+      @invoke = proc { warn "I don't know what to do!" }
     end
 
     def parse(&block)

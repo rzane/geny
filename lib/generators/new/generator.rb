@@ -1,4 +1,5 @@
 parse do
+  description "create a new generator"
   argument :name, desc: "name for your generator", required: true
   option :output, desc: "output directory", default: Dir.pwd
 end
