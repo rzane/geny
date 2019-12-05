@@ -5,7 +5,6 @@ require "code_hen/version"
 
 module CodeHen
   class CLI
-    MANIFEST = "generator.rb"
     LOAD_PATH = [File.expand_path("../generators", __dir__)]
 
     def initialize(version: CodeHen::VERSION, load_path: LOAD_PATH)

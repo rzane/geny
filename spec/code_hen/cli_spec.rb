@@ -6,18 +6,18 @@ RSpec.describe CodeHen::CLI do
   after(:each) { FileUtils.rm_rf(tmp) }
 
   it "parses and runs a shallow generator" do
-    cli = CodeHen::CLI.new(roots: [tmp.to_s], argv: ["foo"])
+    cli = CodeHen::CLI.new(load_path: [tmp.to_s])
 
     tmp.join("foo").mkdir
     tmp.join("foo/generator.rb").write <<~EOS
       invoke { puts "ran foo" }
     EOS
 
-    expect { cli.run }.to output("ran foo\n").to_stdout
+    expect { cli.run(["foo"]) }.to output("ran foo\n").to_stdout
   end
 
   it "parses and runs a nested generator" do
-    cli = CodeHen::CLI.new(roots: [tmp.to_s], argv: ["foo:bar"])
+    cli = CodeHen::CLI.new(load_path: [tmp.to_s])
 
     tmp.join("foo").mkdir
     tmp.join("foo/bar").mkdir
@@ -25,6 +25,6 @@ RSpec.describe CodeHen::CLI do
       invoke { puts "ran foo/bar" }
     EOS
 
-    expect { cli.run }.to output("ran foo/bar\n").to_stdout
+    expect { cli.run(["foo:bar"]) }.to output("ran foo/bar\n").to_stdout
   end
 end
