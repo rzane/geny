@@ -1,15 +1,15 @@
 lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "code_hen/version"
+require "geny/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "code_hen"
-  spec.version       = CodeHen::VERSION
+  spec.name          = "geny"
+  spec.version       = Geny::VERSION
   spec.authors       = ["Ray Zane"]
   spec.email         = ["raymondzane@gmail.com"]
 
   spec.summary       = %q{The only tool you need to build a code generator.}
-  spec.homepage      = "https://github.com/rzane/code_hen"
+  spec.homepage      = "https://github.com/rzane/geny"
   spec.license       = "MIT"
 
   # Specify which files should be added to the gem when it is released.

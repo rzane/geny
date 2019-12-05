@@ -1,7 +1,7 @@
 require "tmpdir"
-require "code_hen/command"
+require "geny/command"
 
-RSpec.describe CodeHen::Command do
+RSpec.describe Geny::Command do
   include TemporaryFileHelpers
 
   it "has a description" do
@@ -11,7 +11,7 @@ RSpec.describe CodeHen::Command do
       end
     EOS
 
-    command = CodeHen::Command.new(name: "a", file: join("a/generator.rb"))
+    command = Geny::Command.new(name: "a", file: join("a/generator.rb"))
     expect(command.description).to eq("cool")
   end
 end

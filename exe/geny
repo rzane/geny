@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 
-require "code_hen/cli"
+require "geny/cli"
 
 begin
-  cli = CodeHen::CLI.new
+  cli = Geny::CLI.new
   cli.run(ARGV)
-rescue CodeHen::Error => error
+rescue Geny::Error => error
   abort "ERROR: #{error.message}"
 end

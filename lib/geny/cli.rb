@@ -1,10 +1,10 @@
-require "code_hen"
-require "code_hen/ui"
-require "code_hen/parser"
-require "code_hen/registry"
-require "code_hen/version"
+require "geny"
+require "geny/ui"
+require "geny/parser"
+require "geny/registry"
+require "geny/version"
 
-module CodeHen
+module Geny
   class CLI
     attr_reader :version, :registry
 

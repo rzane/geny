@@ -1,6 +1,6 @@
 require "pastel"
 
-module CodeHen
+module Geny
   class UI
     def heading(message)
       say render_heading(message)

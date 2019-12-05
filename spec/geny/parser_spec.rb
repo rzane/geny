@@ -1,7 +1,7 @@
-require "code_hen/parser"
+require "geny/parser"
 
-RSpec.describe CodeHen::Parser do
-  subject(:parser) { CodeHen::Parser.new }
+RSpec.describe Geny::Parser do
+  subject(:parser) { Geny::Parser.new }
 
   it "parses an option" do
     parser.option :value
@@ -61,7 +61,7 @@ RSpec.describe CodeHen::Parser do
   it "respects missing arguments" do
     parser.argument :value, required: true
     expect { parser.parse([]) }.to raise_error(
-      CodeHen::ParserError,
+      Geny::ParserError,
       "Missing required arguments: VALUE"
     )
   end
@@ -69,7 +69,7 @@ RSpec.describe CodeHen::Parser do
   it "respects required options" do
     parser.option :value, required: true
     expect { parser.parse([]) }.to raise_error(
-      CodeHen::ParserError,
+      Geny::ParserError,
       "Missing required options: --value"
     )
   end
@@ -83,7 +83,7 @@ RSpec.describe CodeHen::Parser do
   it "raises a custom error when coersion fails" do
     parser.option :value, type: :integer
     expect { parser.parse(["--value", ""]) }.to raise_error(
-      CodeHen::ParserError,
+      Geny::ParserError,
       /"" could not be coerced to a integer/
     )
   end

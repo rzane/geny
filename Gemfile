@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in code_hen.gemspec
+# Specify your gem's dependencies in geny.gemspec
 gemspec
 
 gem 'pry'

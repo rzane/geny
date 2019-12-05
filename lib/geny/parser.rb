@@ -1,8 +1,8 @@
 require "optparse"
-require "code_hen/error"
-require "code_hen/option"
+require "geny/error"
+require "geny/option"
 
-module CodeHen
+module Geny
   class Parser
     attr_reader :examples, :arguments, :options
 

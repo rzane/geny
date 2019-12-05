@@ -1,7 +1,7 @@
 require "pathname"
-require "code_hen/parser"
+require "geny/parser"
 
-module CodeHen
+module Geny
   class DSL
     def initialize
       @helpers = []

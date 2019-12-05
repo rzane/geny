@@ -1,6 +1,6 @@
-require "code_hen/dsl"
+require "geny/dsl"
 
-RSpec.describe CodeHen::DSL do
+RSpec.describe Geny::DSL do
   subject(:dsl) { described_class.new }
 
   it "has a default invocation" do

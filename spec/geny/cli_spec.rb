@@ -1,15 +1,15 @@
 require "tmpdir"
-require "code_hen/cli"
+require "geny/cli"
 
-RSpec.describe CodeHen::CLI do
+RSpec.describe Geny::CLI do
   include TemporaryFileHelpers
 
   let(:registry) {
-    CodeHen::Registry.new(load_path: [tmp])
+    Geny::Registry.new(load_path: [tmp])
   }
 
   subject(:cli) {
-    CodeHen::CLI.new(registry: registry)
+    Geny::CLI.new(registry: registry)
   }
 
   it "parses and runs a shallow generator" do

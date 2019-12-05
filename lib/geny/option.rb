@@ -1,6 +1,6 @@
 require "pathname"
 
-module CodeHen
+module Geny
   class Option
     attr_reader :name, :type, :aliases, :desc, :default
 

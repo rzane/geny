@@ -1,10 +1,10 @@
-require "code_hen/registry"
+require "geny/registry"
 
-RSpec.describe CodeHen::Registry do
+RSpec.describe Geny::Registry do
   include TemporaryFileHelpers
 
   subject(:registry) {
-    CodeHen::Registry.new(load_path: [tmp])
+    Geny::Registry.new(load_path: [tmp])
   }
 
   before do
@@ -40,7 +40,7 @@ RSpec.describe CodeHen::Registry do
 
     it "raises when the generator is not found" do
       expect { registry.find!("c") }.to raise_error(
-        CodeHen::NotFoundError,
+        Geny::NotFoundError,
         "There doesn't appear to be a generator named 'c'."
       )
     end

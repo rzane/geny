@@ -1,4 +1,4 @@
-module CodeHen
+module Geny
   class Generator
     def initialize(context:)
       @context = context

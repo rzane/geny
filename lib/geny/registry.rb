@@ -1,8 +1,8 @@
 require "pathname"
-require "code_hen/error"
-require "code_hen/command"
+require "geny/error"
+require "geny/command"
 
-module CodeHen
+module Geny
   class Registry
     FILENAME = "generator.rb"
     LOAD_PATH = [

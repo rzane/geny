@@ -1,7 +1,7 @@
-require "code_hen/dsl"
-require "code_hen/generator"
+require "geny/dsl"
+require "geny/generator"
 
-module CodeHen
+module Geny
   class Command
     attr_reader :name, :file
 
