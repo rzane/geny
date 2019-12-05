@@ -66,6 +66,12 @@ RSpec.describe CodeHen::Parser do
     )
   end
 
+  it "keeps unused arguments" do
+    parser.argument :foo
+    options = parser.parse %w(foo bar -f buzz)
+    expect(options).to eq(foo: "foo", unused_arguments: ["bar", "-f", "buzz"])
+  end
+
   it "raises a custom error when coersion fails" do
     parser.option :value, type: :integer
     expect { parser.parse(["--value", ""]) }.to raise_error(

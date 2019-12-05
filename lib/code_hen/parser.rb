@@ -42,7 +42,7 @@ module CodeHen
       argv = argv.dup
       values = collect_default_values
       parser = build_parser(values: values)
-      parser.parse!(argv)
+      parser.order!(argv)
       backfill_arguments(argv: argv, values: values)
       validate!(values: values)
       values
