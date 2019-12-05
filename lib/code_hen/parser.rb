@@ -13,6 +13,7 @@ module CodeHen
       @arguments = []
       @options = []
       @examples = []
+      yield self if block_given?
     end
 
     def usage(usage = nil)

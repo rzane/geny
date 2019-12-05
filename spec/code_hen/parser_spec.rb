@@ -29,6 +29,14 @@ RSpec.describe CodeHen::Parser do
     expect(parser.parse(["--value", "one,two"])).to have_values(value: ["one", "two"])
   end
 
+  it "parses a pathname" do
+    parser.option :value, type: :pathname
+    options = parser.parse(["--value", "/"])
+    value = options.fetch(:value)
+    expect(value).to be_a(Pathname)
+    expect(value.to_s).to eq("/")
+  end
+
   it "parses a custom option" do
     parser.option :value, type: ->(value) { "custom #{value}" }
     expect(parser.parse(["--value", "foo"])).to have_values(value: "custom foo")

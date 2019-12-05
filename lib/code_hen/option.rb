@@ -1,3 +1,5 @@
+require "pathname"
+
 module CodeHen
   class Option
     attr_reader :name, :type, :aliases, :desc, :default
@@ -25,16 +27,19 @@ module CodeHen
 
     def coerce(value)
       case type
-      when :string, :boolean then value
-      when :integer then Integer(value)
-      when :float then Float(value)
-      when :array then value.split(",")
+      when :string, :boolean
+        value
+      when :integer
+        Integer(value)
+      when :float
+        Float(value)
+      when :array
+        value.split(",")
+      when :pathname
+        Pathname.new(value).expand_path(Dir.pwd)
       else
-        if type.respond_to?(:call)
-          type.call(value)
-        else
-          raise "Invalid type: #{type}"
-        end
+        raise "Invalid type: #{type}" unless type.respond_to?(:call)
+        type.call(value)
       end
     rescue ArgumentError
       raise ParserError, "#{value.inspect} could not be coerced to a #{type}."
