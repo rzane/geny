@@ -3,7 +3,7 @@ parse do |o|
   o.string "--output", "output directory", default: Dir.pwd
 end
 
-generate do
+invoke do
   require "fileutils"
 
   dir = File.join(output, *name.split(":"))

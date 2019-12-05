@@ -1,23 +1,23 @@
 module CodeHen
-  class Context
-    def initialize(locals)
-      @locals = locals
+  class Generator
+    def initialize(context:)
+      @context = context
     end
 
     private
 
     def respond_to_missing?(name, *)
-      @locals.key?(name) || super
+      @context.key?(name) || super
     end
 
     def method_missing(name, *args)
-      return super unless @locals.key?(name)
+      return super unless @context.key?(name)
 
       unless args.empty?
         raise ArgumentError, "wrong number of arguments (given #{args.length}, expected 0)"
       end
 
-      @locals[name]
+      @context[name]
     end
   end
 end

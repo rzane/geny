@@ -3,7 +3,7 @@ module CodeHen
     def initialize
       @helpers = []
       @parse = ->(opts){ opts }
-      @generate = -> { warn "I don't know what to do!" }
+      @invoke = -> { warn "I don't know what to do!" }
     end
 
     def parse(&block)
@@ -11,9 +11,9 @@ module CodeHen
       @parse
     end
 
-    def generate(&block)
-      @generate = block if block_given?
-      @generate
+    def invoke(&block)
+      @invoke = block if block_given?
+      @invoke
     end
 
     def helpers(&block)

@@ -1,7 +1,7 @@
 require "slop"
 require "code_hen"
 require "code_hen/dsl"
-require "code_hen/context"
+require "code_hen/generator"
 
 module CodeHen
   class CLI
@@ -39,11 +39,11 @@ module CodeHen
         end
       end
 
-      context = Context.new(opts.to_hash)
+      generator = Generator.new(context: opts.to_hash)
       dsl.helpers.each do |helper|
-        context.extend helper
+        generator.extend helper
       end
-      context.instance_eval(&dsl.generate)
+      generator.instance_eval(&dsl.invoke)
     end
 
     private
