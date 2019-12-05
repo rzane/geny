@@ -5,6 +5,6 @@ require "code_hen/cli"
 begin
   cli = CodeHen::CLI.new
   cli.run(ARGV)
-rescue CodeHen::Error, CodeHen::Parser::Error => error
+rescue CodeHen::Error => error
   abort "ERROR: #{error.message}"
 end

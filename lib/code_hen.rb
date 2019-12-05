@@ -1,9 +1,7 @@
+require "code_hen/error"
 require "code_hen/version"
 
 module CodeHen
-  class Error < StandardError
-  end
-
   def self.load_path
     @load_path ||= [
       File.join(Dir.pwd, ".generators"),

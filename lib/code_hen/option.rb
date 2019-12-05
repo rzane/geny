@@ -37,7 +37,7 @@ module CodeHen
         end
       end
     rescue ArgumentError
-      raise Parser::Error, "#{value.inspect} could not be coerced to a #{type}."
+      raise ParserError, "#{value.inspect} could not be coerced to a #{type}."
     end
 
     def parser_options

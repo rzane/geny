@@ -53,7 +53,7 @@ RSpec.describe CodeHen::Parser do
   it "respects missing arguments" do
     parser.argument :value, required: true
     expect { parser.parse([]) }.to raise_error(
-      CodeHen::Parser::Error,
+      CodeHen::ParserError,
       "Missing required arguments: VALUE"
     )
   end
@@ -61,7 +61,7 @@ RSpec.describe CodeHen::Parser do
   it "respects required options" do
     parser.option :value, required: true
     expect { parser.parse([]) }.to raise_error(
-      CodeHen::Parser::Error,
+      CodeHen::ParserError,
       "Missing required options: --value"
     )
   end
@@ -75,7 +75,7 @@ RSpec.describe CodeHen::Parser do
   it "raises a custom error when coersion fails" do
     parser.option :value, type: :integer
     expect { parser.parse(["--value", ""]) }.to raise_error(
-      CodeHen::Parser::Error,
+      CodeHen::ParserError,
       /"" could not be coerced to a integer/
     )
   end

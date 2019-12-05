@@ -1,11 +1,9 @@
 require "optparse"
+require "code_hen/error"
 require "code_hen/option"
 
 module CodeHen
   class Parser
-    class Error < StandardError
-    end
-
     def initialize
       @usage = $0
       @version = nil
@@ -120,11 +118,11 @@ module CodeHen
       opts = detect_missing_options(values, @options).map(&:flag)
 
       unless args.empty?
-        raise Error, "Missing required arguments: #{args.join(", ")}"
+        raise ParserError, "Missing required arguments: #{args.join(", ")}"
       end
 
       unless opts.empty?
-        raise Error, "Missing required options: #{opts.join(", ")}"
+        raise ParserError, "Missing required options: #{opts.join(", ")}"
       end
     end
 

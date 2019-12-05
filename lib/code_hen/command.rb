@@ -1,4 +1,5 @@
 require "code_hen/dsl"
+require "code_hen/error"
 require "code_hen/parser"
 require "code_hen/generator"
 
@@ -52,7 +53,7 @@ module CodeHen
     end
 
     def command_not_found!
-      raise Error, "There doesn't appear to be a generator named '#{name}'."
+      raise NotFoundError, "There doesn't appear to be a generator named '#{name}'."
     end
   end
 end
