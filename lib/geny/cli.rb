@@ -1,6 +1,6 @@
+require "argy"
 require "geny"
 require "geny/ui"
-require "geny/parser"
 require "geny/registry"
 require "geny/version"
 
@@ -14,13 +14,7 @@ module Geny
     end
 
     def run(argv)
-      parser = Parser.new
-      parser.version(version)
-      parser.argument :command, desc: "command to run"
-
-      options = parser.parse(argv)
-      name = options[:command]
-      args = options[:unused_arguments]
+      name, args = parse(argv)
 
       if name.nil?
         show_all_commands
@@ -41,6 +35,15 @@ module Geny
         desc = ui.color.dim(desc) if desc
         ui.say "#{name}#{desc}"
       end
+    end
+
+    def parse(argv)
+      options = Argy.parse argv do |o|
+        o.version version
+        o.argument :command, desc: "command to run"
+      end
+
+      options.values_at(:command, :unused_arguments)
     end
 
     def ui

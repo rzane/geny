@@ -1,5 +1,5 @@
+require "argy"
 require "pathname"
-require "geny/parser"
 
 module Geny
   class DSL
@@ -9,7 +9,7 @@ module Geny
     end
 
     def parser
-      @parser ||= Parser.new do |o|
+      @parser ||= Argy.new do |o|
         o.option :output, aliases: ["-o"], type: :pathname, default: Pathname.pwd
       end
     end

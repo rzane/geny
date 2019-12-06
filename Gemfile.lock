@@ -1,7 +1,13 @@
 PATH
+  remote: ../argy
+  specs:
+    argy (0.1.0)
+
+PATH
   remote: .
   specs:
     geny (0.1.0)
+      argy (~> 0.1.0)
       pastel (~> 0.7.3)
 
 GEM
@@ -37,6 +43,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  argy!
   bundler (~> 2.0)
   geny!
   pry
