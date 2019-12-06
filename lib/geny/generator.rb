@@ -9,20 +9,16 @@ module Geny
       @context = context
     end
 
-    def output
-      @context.fetch(:output)
-    end
-
     def ui
       @ui ||= UI.new
     end
 
     def files
-      @files ||= Files.new(output: output)
+      @files ||= Files.new
     end
 
     def shell
-      @shell ||= Shell.new(output: output, ui: ui)
+      @shell ||= Shell.new(ui: ui)
     end
 
     def git

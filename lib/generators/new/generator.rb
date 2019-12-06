@@ -14,10 +14,6 @@ invoke do
       puts message
     end
   RUBY
-
-  git.init
-  git.add "-A"
-  git.commit "First commit"
 end
 
 helpers do

@@ -10,7 +10,7 @@ module Geny
 
     def parser
       @parser ||= Argy.new do |o|
-        o.option :output, aliases: ["-o"], type: :pathname, default: Pathname.pwd
+        o.option :cwd, desc: "change the current directory"
       end
     end
 

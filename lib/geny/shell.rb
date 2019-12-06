@@ -3,9 +3,8 @@ require "geny/error"
 
 module Geny
   class Shell
-    def initialize(ui:, output:)
+    def initialize(ui:)
       @ui = ui
-      @output = output
     end
 
     def capture(*args, **opts)
@@ -30,12 +29,8 @@ module Geny
 
     private
 
-    def build(*args, env: nil, chdir: ".", **opts)
-      [*env, *args, chdir: expand_path(chdir), **opts]
-    end
-
-    def expand_path(path)
-      File.expand_path(path, @output)
+    def build(*args, env: nil, **opts)
+      [*env, *args, **opts]
     end
 
     def stringify(args)
