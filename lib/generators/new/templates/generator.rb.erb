@@ -1,7 +1,9 @@
 parse do
-  argument :message, required: true
+  description "a really useful generator"
+  usage "geny <%= name %> [MESSAGE]"
+  argument :message, required: true, desc: "the message to print"
 end
 
 invoke do
-  puts message
+  ui.say message
 end

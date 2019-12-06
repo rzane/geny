@@ -5,7 +5,7 @@ parse do
 end
 
 invoke do
-  templates.copy "generator.rb.erb", outfile
+  templates.copy "generator.rb.erb", outfile, context: self
 end
 
 helpers do
