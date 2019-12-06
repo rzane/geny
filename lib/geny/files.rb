@@ -2,7 +2,7 @@ require "tty-file"
 
 module Geny
   class Files
-    def initialize(output)
+    def initialize(output:)
       @output = output
     end
 

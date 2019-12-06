@@ -1,4 +1,5 @@
 require "geny/ui"
+require "geny/shell"
 require "geny/files"
 
 module Geny
@@ -7,12 +8,20 @@ module Geny
       @context = context
     end
 
+    def output
+      @context.fetch(:output)
+    end
+
     def ui
       @ui ||= UI.new
     end
 
+    def shell
+      @shell ||= Shell.new(output: output, ui: ui)
+    end
+
     def files
-      @files ||= Files.new(@context.fetch(:output))
+      @files ||= Files.new(output: output)
     end
 
     private
