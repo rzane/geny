@@ -5,6 +5,6 @@ require "geny/cli"
 begin
   cli = Geny::CLI.new
   cli.run(ARGV)
-rescue Geny::Error => error
+rescue Geny::Error, Argy::Error => error
   abort "ERROR: #{error.message}"
 end

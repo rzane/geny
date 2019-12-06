@@ -1,3 +1,4 @@
+require "argy"
 require "geny"
 require "geny/ui"
 require "geny/registry"
