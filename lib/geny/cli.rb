@@ -1,4 +1,3 @@
-require "argy"
 require "geny"
 require "geny/ui"
 require "geny/registry"
@@ -14,10 +13,13 @@ module Geny
     end
 
     def run(argv)
-      name, args = parse(argv)
+      name, *args = argv
 
-      if name.nil?
-        show_all_commands
+      case name
+      when nil, '-h', '--help'
+        print_help
+      when '-v', '--version'
+        ui.say version
       else
         command = registry.find!(name)
         command.run(args)
@@ -26,24 +28,18 @@ module Geny
 
     private
 
-    def show_all_commands
-      ui.heading("Generators")
-
+    def print_help
+      ui.say ui.color.bold("USAGE")
+      ui.say "  geny [COMMAND]"
+      ui.say ui.color.bold("\nARGUMENTS")
+      ui.say "  COMMAND              command to run (required)"
+      ui.say ui.color.bold("\nFLAGS")
+      ui.say "  -v, --version        print version and exit"
+      ui.say "  -h, --help           show this help and exit"
+      ui.say ui.color.bold("\nCOMMANDS")
       registry.scan.each do |command|
-        name = ui.color.cyan(command.name)
-        desc = command.description&.rjust(38)
-        desc = ui.color.dim(desc) if desc
-        ui.say "#{name}#{desc}"
+        ui.say "  #{command.name}#{command.description&.rjust(40)}"
       end
-    end
-
-    def parse(argv)
-      options = Argy.parse argv do |o|
-        o.version version
-        o.argument :command, desc: "command to run"
-      end
-
-      options.values_at(:command, :unused_arguments)
     end
 
     def ui
