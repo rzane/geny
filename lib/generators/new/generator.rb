@@ -10,6 +10,6 @@ end
 
 helpers do
   def outfile
-    File.join(*name.split(":"), Geny::Registry::FILENAME)
+    File.join(".geny", *name.split(":"), Geny::Registry::FILENAME)
   end
 end

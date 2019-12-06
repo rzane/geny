@@ -4,6 +4,9 @@ require "geny/shell"
 require "geny/files"
 require "geny/templates"
 
+require "active_support/core_ext/string/indent"
+require "active_support/core_ext/string/inflections"
+
 module Geny
   class Generator
     attr_reader :ui, :files, :shell, :git, :templates

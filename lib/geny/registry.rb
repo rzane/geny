@@ -6,7 +6,7 @@ module Geny
   class Registry
     FILENAME = "generator.rb"
     LOAD_PATH = [
-      File.join(Dir.pwd, ".generators"),
+      File.join(Dir.pwd, ".geny"),
       *ENV.fetch("CODE_HEN_PATH", "").split(":"),
       File.expand_path("../generators", __dir__)
     ]
