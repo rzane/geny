@@ -2,20 +2,20 @@ require "pastel"
 
 module Geny
   class UI
-    def heading(message)
-      say render_heading(message)
+    def color
+      @color ||= Pastel.new(enabled: $stdout.tty?)
     end
 
-    def render_heading(message)
-      "#{color.dim("==")} #{color.bold(message)}"
+    def heading(message)
+      say "#{color.dim("==")} #{color.bold(message)}"
+    end
+
+    def status(label, message, color: :green)
+      say "#{self.color.send(color, label.rjust(12))}  #{message}"
     end
 
     def say(message)
       puts message
-    end
-
-    def color
-      @color ||= Pastel.new(enabled: $stdout.tty?)
     end
   end
 end
