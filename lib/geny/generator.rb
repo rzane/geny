@@ -1,7 +1,18 @@
+require "geny/ui"
+require "geny/files"
+
 module Geny
   class Generator
     def initialize(context:)
       @context = context
+    end
+
+    def ui
+      @ui ||= UI.new
+    end
+
+    def files
+      @files ||= Files.new(@context.fetch(:output))
     end
 
     private

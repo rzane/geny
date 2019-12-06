@@ -4,8 +4,7 @@ parse do
 end
 
 invoke do
-  outfile.dirname.mkpath
-  outfile.write <<~RUBY
+  files.create outfile, <<~RUBY
     parse do
       argument :message, required: true
     end
@@ -18,6 +17,6 @@ end
 
 helpers do
   def outfile
-    output.join(*name.split(":"), "generator.rb")
+    File.join(*name.split(":"), Geny::Registry::FILENAME)
   end
 end
