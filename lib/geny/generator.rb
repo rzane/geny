@@ -1,4 +1,5 @@
 require "geny/ui"
+require "geny/git"
 require "geny/shell"
 require "geny/files"
 
@@ -16,12 +17,16 @@ module Geny
       @ui ||= UI.new
     end
 
+    def files
+      @files ||= Files.new(output: output)
+    end
+
     def shell
       @shell ||= Shell.new(output: output, ui: ui)
     end
 
-    def files
-      @files ||= Files.new(output: output)
+    def git
+      @git ||= Git.new(shell: shell)
     end
 
     private

@@ -1,4 +1,5 @@
 require "open3"
+require "geny/error"
 
 module Geny
   class Shell
@@ -7,11 +8,14 @@ module Geny
       @output = output
     end
 
-    def capture(*args)
-      cmd = build(*args)
+    def capture(*args, **opts)
+      cmd = build(*args, **opts)
+      cmd_str = stringify(args)
       out, _err, status = Open3.capture3(*cmd)
-      out.chomp if status.success?
+      assert!(status, cmd_str)
+      out.chomp
     rescue Errno::ENOENT
+      raise ExitError.new(command: cmd_str, code: 127)
     end
 
     def run(*args, verbose: true, **opts)
@@ -20,8 +24,8 @@ module Geny
 
       @ui.status("run", cmd_str) if verbose
 
-      return if Kernel.system(*cmd)
-      error!(cmd_str, $?.exitcode)
+      Kernel.system(*cmd)
+      assert!($?, cmd_str)
     end
 
     private
@@ -38,8 +42,10 @@ module Geny
       args.map { |arg| arg.match?(/\s/) ? arg.inspect : arg }.join(" ")
     end
 
-    def error!(cmd, code)
-      raise ExitStatusError, "Command `#{cmd}` failed (exit code: #{code})"
+    def assert!(status, cmd)
+      unless status.success?
+        raise ExitError.new(command: cmd, code: status.exitstatus)
+      end
     end
   end
 end
