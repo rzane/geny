@@ -8,7 +8,7 @@ require "active_support/core_ext/string/indent"
 require "active_support/core_ext/string/inflections"
 
 module Geny
-  class Generator
+  class Context
     attr_reader :ui, :files, :shell, :git, :templates
 
     def initialize(file:, context:)

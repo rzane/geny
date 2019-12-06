@@ -1,5 +1,5 @@
 require "geny/dsl"
-require "geny/generator"
+require "geny/context"
 
 module Geny
   class Command
@@ -23,9 +23,9 @@ module Geny
     end
 
     def invoke(**context)
-      gen = Generator.new(file: file, context: context)
-      dsl.helpers.each { |h| gen.extend(h) }
-      gen.instance_eval(&dsl.invoke)
+      context = Context.new(file: file, context: context)
+      dsl.helpers.each { |h| context.extend(h) }
+      context.instance_eval(&dsl.invoke)
     end
 
     private
