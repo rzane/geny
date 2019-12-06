@@ -22,15 +22,10 @@ module Geny
       invoke parse(argv)
     end
 
-    def invoke(cwd: nil, **context)
+    def invoke(**context)
       gen = Generator.new(file: file, context: context)
       dsl.helpers.each { |h| gen.extend(h) }
-
-      if cwd
-        Dir.chdir(cwd) { gen.instance_eval(&dsl.invoke) }
-      else
-        gen.instance_eval(&dsl.invoke)
-      end
+      gen.instance_eval(&dsl.invoke)
     end
 
     private

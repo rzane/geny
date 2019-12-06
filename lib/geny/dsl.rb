@@ -9,9 +9,7 @@ module Geny
     end
 
     def parser
-      @parser ||= Argy.new do |o|
-        o.option :cwd, desc: "change the current directory"
-      end
+      @parser ||= Argy.new
     end
 
     def parse(&block)
