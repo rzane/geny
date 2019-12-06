@@ -11,7 +11,7 @@ module Geny
   class Context
     attr_reader :ui, :files, :shell, :git, :templates
 
-    def initialize(file:, locals:)
+    def initialize(file:, locals:, helpers: [])
       @locals = locals
 
       @ui = UI.new
@@ -19,6 +19,8 @@ module Geny
       @shell = Shell.new(ui: ui)
       @git = Git.new(shell: shell)
       @templates = Templates.new(root: File.expand_path("../templates", file))
+
+      helpers.each { |helper| extend helper }
     end
 
     private

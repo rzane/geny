@@ -23,8 +23,12 @@ module Geny
     end
 
     def invoke(**options)
-      context = Context.new(file: file, locals: options)
-      dsl.helpers.each { |h| context.extend(h) }
+      context = Context.new(
+        file: file,
+        locals: options,
+        helpers: helpers
+      )
+
       context.instance_eval(&dsl.invoke)
     end
 
