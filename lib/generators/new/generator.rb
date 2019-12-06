@@ -5,15 +5,7 @@ parse do
 end
 
 invoke do
-  files.create outfile, <<~RUBY
-    parse do
-      argument :message, required: true
-    end
-
-    invoke do
-      puts message
-    end
-  RUBY
+  templates.copy "generator.rb.erb", outfile
 end
 
 helpers do

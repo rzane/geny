@@ -2,27 +2,20 @@ require "geny/ui"
 require "geny/git"
 require "geny/shell"
 require "geny/files"
+require "geny/templates"
 
 module Geny
   class Generator
-    def initialize(context:)
+    attr_reader :ui, :files, :shell, :git, :templates
+
+    def initialize(file:, context:)
       @context = context
-    end
 
-    def ui
-      @ui ||= UI.new
-    end
-
-    def files
-      @files ||= Files.new
-    end
-
-    def shell
-      @shell ||= Shell.new(ui: ui)
-    end
-
-    def git
-      @git ||= Git.new(shell: shell)
+      @ui = UI.new
+      @files = Files.new
+      @shell = Shell.new(ui: ui)
+      @git = Git.new(shell: shell)
+      @templates = Templates.new(root: File.expand_path("../templates", file))
     end
 
     private

@@ -23,7 +23,7 @@ module Geny
     end
 
     def invoke(cwd: nil, **context)
-      gen = Generator.new(context: context)
+      gen = Generator.new(file: file, context: context)
       dsl.helpers.each { |h| gen.extend(h) }
 
       if cwd
