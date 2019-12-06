@@ -22,8 +22,8 @@ module Geny
       invoke parse(argv)
     end
 
-    def invoke(**context)
-      context = Context.new(file: file, context: context)
+    def invoke(**options)
+      context = Context.new(file: file, locals: options)
       dsl.helpers.each { |h| context.extend(h) }
       context.instance_eval(&dsl.invoke)
     end

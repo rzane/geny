@@ -11,8 +11,8 @@ module Geny
   class Context
     attr_reader :ui, :files, :shell, :git, :templates
 
-    def initialize(file:, context:)
-      @context = context
+    def initialize(file:, locals:)
+      @locals = locals
 
       @ui = UI.new
       @files = Files.new
@@ -24,17 +24,17 @@ module Geny
     private
 
     def respond_to_missing?(name, *)
-      @context.key?(name) || super
+      @locals.key?(name) || super
     end
 
     def method_missing(name, *args)
-      return super unless @context.key?(name)
+      return super unless @locals.key?(name)
 
       unless args.empty?
         raise ArgumentError, "wrong number of arguments (given #{args.length}, expected 0)"
       end
 
-      @context[name]
+      @locals[name]
     end
   end
 end
