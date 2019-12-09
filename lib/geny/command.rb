@@ -10,6 +10,14 @@ module Geny
       @file = file
     end
 
+    def helpers
+      dsl.helpers
+    end
+
+    def templates_path
+      File.expand_path("../templates", file)
+    end
+
     def description
       dsl.parser.description
     end
@@ -23,12 +31,7 @@ module Geny
     end
 
     def invoke(**options)
-      context = Context.new(
-        file: file,
-        locals: options,
-        helpers: helpers
-      )
-
+      context = Context.new(self, locals: options)
       context.instance_eval(&dsl.invoke)
     end
 
