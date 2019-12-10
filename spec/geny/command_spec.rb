@@ -11,7 +11,7 @@ RSpec.describe Geny::Command do
       end
     EOS
 
-    command = Geny::Command.new(name: "a", file: join("a/generator.rb"))
+    command = Geny::Command.new(name: "a", file: tmp.join("a/generator.rb"))
     expect(command.description).to eq("cool")
   end
 end

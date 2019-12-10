@@ -4,18 +4,14 @@ require "pry"
 
 module TemporaryFileHelpers
   def self.included(base)
-    base.let(:tmp)    { Dir.mktmpdir }
-    base.after(:each) { FileUtils.rm_rf(tmp) }
-  end
-
-  def join(filename)
-    File.join(tmp, filename)
+    base.let(:tmp)    { Pathname.new(Dir.mktmpdir) }
+    base.after(:each) { tmp.rmtree }
   end
 
   def write(filename, content = "")
-    path = File.join(tmp, filename)
-    FileUtils.mkdir_p File.dirname(path)
-    File.write(path, content)
+    path = tmp.join(filename)
+    path.parent.mkpath
+    path.write(content)
   end
 end
 
