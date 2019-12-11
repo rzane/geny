@@ -1,12 +1,12 @@
 module Geny
   module Context
     class Base
-      attr_reader :locals, :_helpers
+      attr_reader :command, :locals
 
-      def initialize(locals: {}, helpers: [])
+      def initialize(command:, locals: {})
         @locals = locals
-        @_helpers = helpers
-        @_helpers.each { |h| extend h }
+        @command = command
+        @command.helpers.each { |h| extend h }
       end
 
       private

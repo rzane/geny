@@ -1,8 +1,12 @@
 require "geny/context/invoke"
 
 RSpec.describe Geny::Context::Invoke do
+  let(:command) {
+    instance_double(Geny::Command)
+  }
+
   subject(:context) {
-    Geny::Context::Invoke.new(templates_path: "/foo/bar")
+    Geny::Context::Invoke.new(command: command)
   }
 
   it "delegates to actions" do
@@ -10,30 +14,14 @@ RSpec.describe Geny::Context::Invoke do
     actions -= Object.instance_methods
 
     expect(actions.sort).to eq %i(
-      append
-      capture
-      chmod
       color
-      copy
-      copy_dir
-      create
-      create_dir
-      git_add
-      git_commit
-      git_init
-      git_repo_path
-      heading
-      insert_after
-      insert_before
+      command
+      files
+      git
       locals
-      options
-      prepend
-      remove
-      render
-      replace
-      run
-      say
-      status
+      shell
+      templates
+      ui
     )
   end
 end

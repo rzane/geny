@@ -40,7 +40,10 @@ RSpec.describe Geny::Context::View do
     end
   end
 
-  def build(**options)
-    Geny::Context::View.new(**options)
+  def build(locals: {}, helpers: [])
+    Geny::Context::View.new(
+      locals: locals,
+      command: instance_double(Geny::Command, helpers: helpers)
+    )
   end
 end

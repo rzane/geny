@@ -27,13 +27,13 @@ module Geny
     end
 
     def run(argv)
-      invoke parse(argv)
+      invoke parse(argv).to_h
     end
 
-    def invoke(options = {})
+    def invoke(**options)
       context = Context::Invoke.new(
         command: self,
-        options: cast_options(options)
+        locals: options
       )
 
       context.instance_eval(&dsl.invoke)

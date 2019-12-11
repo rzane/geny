@@ -5,11 +5,11 @@ parse do
 end
 
 invoke do
-  copy "generator.rb.erb", outfile, context: self
+  templates.copy "generator.rb.erb", generator_path
 end
 
 helpers do
-  def outfile
+  def generator_path
     File.join(".geny", *name.split(":"), Geny::Registry::FILENAME)
   end
 end

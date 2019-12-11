@@ -55,10 +55,9 @@ RSpec.describe Geny::Actions::Templates do
     expect(result).to eq("hello world!")
   end
 
-  def build(**opts)
-    Geny::Actions::Templates.new(
-      root: tmp.to_s,
-      view: Geny::Context::View.new(opts)
-    )
+  def build(locals: {}, helpers: [])
+    command = instance_double(Geny::Command, helpers: helpers)
+    view = Geny::Context::View.new(command: command, locals: locals)
+    Geny::Actions::Templates.new(root: tmp.to_s, view: view)
   end
 end

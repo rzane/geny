@@ -31,8 +31,8 @@ module Geny
 
       private
 
-      def build_context(locals: {}, helpers: [], **opts)
-        [@view.merge(locals: locals, helpers: helpers), opts]
+      def build_context(locals: {}, **opts)
+        [@view.merge(locals), opts]
       end
 
       def expand_path(path)
