@@ -2,8 +2,6 @@ require "tmpdir"
 require "geny/command"
 
 RSpec.describe Geny::Command do
-  include TemporaryFileHelpers
-
   it "has a description" do
     write "a/generator.rb", <<~EOS
       parse do

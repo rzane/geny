@@ -2,10 +2,25 @@ require "bundler/setup"
 require "geny"
 require "pry"
 
-module TemporaryFileHelpers
-  def self.included(base)
-    base.let(:tmp)    { Pathname.new(Dir.mktmpdir) }
-    base.after(:each) { tmp.rmtree }
+module Helpers
+  def module_double(opts)
+    mod = Module.new
+    opts.each do |key, value|
+      if value.respond_to?(:call)
+        mod.define_method(key, &value)
+      else
+        mod.define_method(key) { value }
+      end
+    end
+    mod
+  end
+
+  def tmp
+    @tmp ||= Pathname.new(Dir.mktmpdir)
+  end
+
+  def purge_tmp
+    @tmp.rmtree if defined?(@tmp)
   end
 
   def write(filename, content = "")
@@ -16,6 +31,12 @@ module TemporaryFileHelpers
 end
 
 RSpec.configure do |config|
+  config.include Helpers
+
+  config.after :each do
+    purge_tmp
+  end
+
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"
 

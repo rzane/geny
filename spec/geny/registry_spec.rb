@@ -1,8 +1,6 @@
 require "geny/registry"
 
 RSpec.describe Geny::Registry do
-  include TemporaryFileHelpers
-
   subject(:registry) {
     Geny::Registry.new(load_path: [tmp.to_s])
   }

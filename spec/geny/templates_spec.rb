@@ -2,8 +2,6 @@ require "geny/actions/templates"
 require "geny/context/view"
 
 RSpec.describe Geny::Actions::Templates do
-  include TemporaryFileHelpers
-
   it "renders" do
     write "hello.erb", "hello world"
     templates = build

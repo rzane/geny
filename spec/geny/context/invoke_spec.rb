@@ -1,16 +1,21 @@
 require "geny/context/invoke"
 
 RSpec.describe Geny::Context::Invoke do
-  let(:command) {
-    instance_double(Geny::Command, helpers: [], templates_path: "")
-  }
+  let(:locals) { {local: "local"} }
+  let(:helpers) { [module_double(helper: "helper")] }
+  let(:command) { instance_double(Geny::Command, helpers: helpers, templates_path: "") }
+  subject(:context) { described_class.new(command: command, locals: locals) }
 
-  subject(:context) {
-    Geny::Context::Invoke.new(command: command)
-  }
+  it "allows access to locals" do
+    expect(context.local).to eq("local")
+  end
+
+  it "allows access to helpers" do
+    expect(context.helper).to eq("helper")
+  end
 
   it "tries to minimize the number of methods in scope" do
-    actions = Geny::Context::Invoke.instance_methods
+    actions = described_class.instance_methods
     actions -= Object.instance_methods
 
     expect(actions.sort).to eq %i(
@@ -60,5 +65,4 @@ RSpec.describe Geny::Context::Invoke do
       expect(context.git).to be_a(Geny::Actions::Git)
     end
   end
-
 end

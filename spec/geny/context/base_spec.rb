@@ -1,47 +1,22 @@
 require "geny/context/base"
 
 RSpec.describe Geny::Context::Base do
-  describe "locals" do
-    let(:locals) { {value: 1} }
-    subject(:context) { build(locals: locals) }
+  let(:locals) { {local: "local"} }
+  let(:helpers) { [module_double(helper: "helper")] }
+  let(:command) { instance_double(Geny::Command, helpers: helpers) }
+  subject(:context) { described_class.new(command: command, locals: locals) }
 
-    it "defines readers" do
-      expect(context.value).to eq(1)
-    end
+  it "makes locals available" do
+    expect(context.local).to eq("local")
+  end
 
-    it "is available as a hash" do
+  it "makes helper methods available" do
+    expect(context.helper).to eq("helper")
+  end
+
+  describe "#locals" do
+    it "returns all locals" do
       expect(context.locals).to eq(locals)
     end
-  end
-
-  describe "helpers" do
-    it "makes methods available" do
-      helper = Module.new do
-        def foo
-          "bar"
-        end
-      end
-
-      context = build(helpers: [helper])
-      expect(context.foo).to eq("bar")
-    end
-
-    it "allows overriding with super" do
-      helper = Module.new do
-        def value
-          super + 1
-        end
-      end
-
-      context = build(locals: {value: 1}, helpers: [helper])
-      expect(context.value).to eq(2)
-    end
-  end
-
-  def build(locals: {}, helpers: [])
-    Geny::Context::Base.new(
-      locals: locals,
-      command: instance_double(Geny::Command, helpers: helpers)
-    )
   end
 end

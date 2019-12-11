@@ -2,8 +2,6 @@ require "tmpdir"
 require "geny/cli"
 
 RSpec.describe Geny::CLI do
-  include TemporaryFileHelpers
-
   let(:registry) {
     Geny::Registry.new(load_path: [tmp.to_s])
   }
