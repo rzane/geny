@@ -8,6 +8,11 @@ require "geny/context/base"
 module Geny
   module Context
     class Invoke < Base
+      def initialize(templates_path:, **opts)
+        super(opts)
+        @templates_path = templates_path
+      end
+
       def color
         Pastel.new(enabled: $stdout.tty?)
       end
@@ -33,7 +38,7 @@ module Geny
       delegate_all Actions::Git, to: :git, prefix: :git
 
       def templates
-        Actions::Templates.new(locals: locals, helpers: helpers)
+        Actions::Templates.new(context: self, root: @templates_path)
       end
       delegate_all Actions::Templates, to: :templates
     end

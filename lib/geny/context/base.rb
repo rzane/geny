@@ -8,7 +8,8 @@ module Geny
       attr_reader :locals, :helpers
 
       def self.delegate_all(klass, to:, prefix: nil)
-        names = klass.instance_methods - Object.instance_methods
+        names = klass.instance_methods
+        names -= Object.instance_methods
         names.each do |name|
           def_delegator(to, name, prefix ? "#{prefix}_#{name}" : name)
         end

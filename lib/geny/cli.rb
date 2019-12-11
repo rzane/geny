@@ -48,17 +48,17 @@ module Geny
       ui.say color.bold("\nCOMMANDS")
 
       registry.scan.each do |cmd|
-        desc = ui.color.dim(cmd.description || "")
+        desc = color.dim(cmd.description || "")
         ui.say "  #{cmd.name.ljust(20)}#{desc}"
       end
     end
 
     def ui
-      @ui ||= Actions::UI.new
+      @ui ||= Actions::UI.new(color: color)
     end
 
     def color
-      @color ||= Pastel.new(enabled: $tty.enabled?)
+      @color ||= Pastel.new(enabled: $stdout.tty?)
     end
   end
 end

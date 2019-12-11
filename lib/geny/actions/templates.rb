@@ -4,15 +4,9 @@ require "geny/context/view"
 module Geny
   module Actions
     class Templates
-      attr_writer :root
-
-      def initialize(locals: {}, helpers: [])
-        @locals = locals
-        @helpers = helpers
-      end
-
-      def root
-        @root || raise("#{self.class}#{__method__} is not configured")
+      def initialize(root:, context:)
+        @root = root
+        @context = context
       end
 
       def copy(source, *args, **opts)
@@ -38,13 +32,13 @@ module Geny
       private
 
       def expand_path(path)
-        File.expand_path(path, root)
+        File.expand_path(path, @root)
       end
 
       def build_context(locals: {}, helpers: [], **opts)
         context = Context::View.new(
-          locals: @locals.merge(locals),
-          helpers: @helpers + helpers
+          locals: @context.locals.merge(locals),
+          helpers: @context.helpers + helpers
         )
 
         [context, opts]
