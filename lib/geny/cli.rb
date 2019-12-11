@@ -45,7 +45,7 @@ module Geny
       end
 
       ui.say parser.help(column: 20)
-      ui.say ui.color.bold("\nCOMMANDS")
+      ui.say color.bold("\nCOMMANDS")
 
       registry.scan.each do |cmd|
         desc = ui.color.dim(cmd.description || "")
@@ -55,6 +55,10 @@ module Geny
 
     def ui
       @ui ||= Actions::UI.new
+    end
+
+    def color
+      @color ||= Pastel.new(enabled: $tty.enabled?)
     end
   end
 end

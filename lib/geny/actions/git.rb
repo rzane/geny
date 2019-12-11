@@ -7,20 +7,20 @@ module Geny
         @shell = shell
       end
 
-      def init(*args)
-        @shell.run("git", "init", *args, out: File::NULL)
+      def init(**opts)
+        @shell.run("git", "init", out: File::NULL, **opts)
       end
 
-      def add(*args)
-        @shell.run("git", "add", *args, out: File::NULL)
+      def add(files: ["."], **opts)
+        @shell.run("git", "add", *files, out: File::NULL, **opts)
       end
 
-      def commit(message, *args)
-        @shell.run("git", "commit", "-m", message, *args, out: File::NULL)
+      def commit(message:, **opts)
+        @shell.run("git", "commit", "-m", message, out: File::NULL, **opts)
       end
 
-      def root
-        @shell.capture("git", "rev-parse", "--show-toplevel", **args)
+      def repo_path(**opts)
+        @shell.capture("git", "rev-parse", "--show-toplevel", **opts)
       end
     end
   end

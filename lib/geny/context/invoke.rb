@@ -8,28 +8,34 @@ require "geny/context/base"
 module Geny
   module Context
     class Invoke < Base
-      def ui
-        @ui ||= Actions::UI.new
+      def color
+        Pastel.new(enabled: $stdout.tty?)
       end
+
+      def ui
+        Actions::UI.new(color: color)
+      end
+      delegate_all Actions::UI, to: :ui
 
       def files
-        @files ||= Actions::Files.new
+        Actions::Files.new
       end
+      delegate_all Actions::Files, to: :files
 
       def shell
-        @shell ||= Actions::Shell.new(ui: ui)
+        Actions::Shell.new(ui: ui)
       end
+      delegate_all Actions::Shell, to: :shell
 
       def git
-        @git ||= Actions::Git.new(shell: shell)
+        Actions::Git.new(shell: shell)
       end
+      delegate_all Actions::Git, to: :git, prefix: :git
 
       def templates
-        @templates ||= Actions::Templates.new(
-          locals: locals,
-          helpers: helpers
-        )
+        Actions::Templates.new(locals: locals, helpers: helpers)
       end
+      delegate_all Actions::Templates, to: :templates
     end
   end
 end

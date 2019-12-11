@@ -1,7 +1,18 @@
+require "forwardable"
+
 module Geny
   module Context
     class Base
+      extend Forwardable
+
       attr_reader :locals, :helpers
+
+      def self.delegate_all(klass, to:, prefix: nil)
+        names = klass.instance_methods - Object.instance_methods
+        names.each do |name|
+          def_delegator(to, name, prefix ? "#{prefix}_#{name}" : name)
+        end
+      end
 
       def initialize(locals: {}, helpers: [])
         @locals = locals
