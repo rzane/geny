@@ -33,7 +33,7 @@ module Geny
     def invoke(**options)
       context = Context::Invoke.new(
         command: self,
-        locals: options
+        locals: extend_with_queries(options)
       )
 
       context.instance_eval(&dsl.invoke)
@@ -41,9 +41,9 @@ module Geny
 
     private
 
-    def cast_options(options)
-      return options if options.kind_of? Argy::Options
-      Argy::Options.new(parser.default_values.merge(options))
+    def extend_with_queries(options)
+      queries = options.map { |k, v| [:"#{k}?", !!v] }
+      options.merge(queries.to_h)
     end
 
     def dsl
