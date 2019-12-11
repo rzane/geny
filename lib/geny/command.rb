@@ -23,24 +23,28 @@ module Geny
     end
 
     def parse(argv)
-      dsl.parser.parse(argv).to_h
+      dsl.parser.parse(argv)
     end
 
     def run(argv)
       invoke parse(argv)
     end
 
-    def invoke(**options)
+    def invoke(options = {})
       context = Context::Invoke.new(
-        helpers: helpers,
-        locals: options,
-        templates_path: templates_path
+        command: self,
+        options: cast_options(options)
       )
 
       context.instance_eval(&dsl.invoke)
     end
 
     private
+
+    def cast_options(options)
+      return options if options.kind_of? Argy::Options
+      Argy::Options.new(parser.default_values.merge(options))
+    end
 
     def dsl
       @dsl ||= load!

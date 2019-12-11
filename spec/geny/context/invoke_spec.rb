@@ -23,10 +23,10 @@ RSpec.describe Geny::Context::Invoke do
       git_init
       git_repo_path
       heading
-      helpers
       insert_after
       insert_before
       locals
+      options
       prepend
       remove
       render

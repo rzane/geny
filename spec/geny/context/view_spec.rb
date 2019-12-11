@@ -1,6 +1,6 @@
-require "geny/context/base"
+require "geny/context/view"
 
-RSpec.describe Geny::Context::Base do
+RSpec.describe Geny::Context::View do
   subject(:context) { build }
 
   describe "locals" do
@@ -41,6 +41,6 @@ RSpec.describe Geny::Context::Base do
   end
 
   def build(**options)
-    Geny::Context::Base.new(**options)
+    Geny::Context::View.new(**options)
   end
 end
