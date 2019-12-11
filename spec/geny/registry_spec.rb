@@ -21,7 +21,7 @@ RSpec.describe Geny::Registry do
     it "finds a generator" do
       command = registry.find("a:b")
       expect(command.name).to eq("a:b")
-      expect(command.file).to eq(tmp.join("a/b/generator.rb").to_s)
+      expect(command.root).to eq(tmp.join("a/b").to_s)
     end
 
     it "is nil when the generator is not found" do
@@ -33,7 +33,7 @@ RSpec.describe Geny::Registry do
     it "finds a generator" do
       command = registry.find!("a:b")
       expect(command.name).to eq("a:b")
-      expect(command.file).to eq(tmp.join("a/b/generator.rb").to_s)
+      expect(command.root).to eq(tmp.join("a/b").to_s)
     end
 
     it "raises when the generator is not found" do

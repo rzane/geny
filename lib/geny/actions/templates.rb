@@ -12,7 +12,7 @@ module Geny
       def copy(source, *args, **opts)
         source = expand_path(source)
         context, opts = build_context(opts)
-        TTY::File.copy(source, *args, context: context, **opts)
+        TTY::File.copy_file(source, *args, context: context, **opts)
       end
 
       def copy_dir(source, *args, **opts)

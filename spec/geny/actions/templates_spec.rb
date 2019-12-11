@@ -53,6 +53,28 @@ RSpec.describe Geny::Actions::Templates do
     expect(result).to eq("hello world!")
   end
 
+  it "copies a file" do
+    write "hello.erb", "hello <%= name %>"
+    output = tmp.join("hello.txt")
+
+    templates = build(locals: {name: "world"})
+    templates.copy("hello.erb", output, verbose: false)
+
+    expect(output).to be_file
+    expect(output.read).to eq("hello world")
+  end
+
+  it "copies a directory" do
+    write "hello/%name%.txt.erb", "hello <%= name %>"
+    output = tmp.join("world.txt")
+
+    templates = build(locals: {name: "world"})
+    templates.copy_dir("hello", tmp, verbose: false)
+
+    expect(output).to be_file
+    expect(output.read).to eq("hello world")
+  end
+
   def build(locals: {}, helpers: [])
     command = instance_double(Geny::Command, helpers: helpers)
     view = Geny::Context::View.new(command: command, locals: locals)

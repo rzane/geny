@@ -10,6 +10,6 @@ end
 
 helpers do
   def generator_path
-    File.join(".geny", *name.split(":"), Geny::Registry::FILENAME)
+    File.join(".geny", *name.split(":"), Geny::Command::FILENAME)
   end
 end

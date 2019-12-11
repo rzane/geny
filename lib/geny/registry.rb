@@ -4,7 +4,6 @@ require "geny/command"
 
 module Geny
   class Registry
-    FILENAME = "generator.rb"
     LOAD_PATH = [
       File.join(Dir.pwd, ".geny"),
       *ENV.fetch("CODE_HEN_PATH", "").split(":"),
@@ -18,23 +17,25 @@ module Geny
     end
 
     def scan
-      glob = File.join("**", FILENAME)
+      glob = File.join("**", Command::FILENAME)
 
       load_path.flat_map do |path|
         path = Pathname.new(path)
 
         path.glob(glob).map do |file|
-          name = file.relative_path_from(path).dirname
+          root = file.dirname
+          name = root.relative_path_from(path)
           name = name.to_s.tr(File::SEPARATOR, ":")
-          Command.new(name: name, file: file.to_s)
+          Command.new(name: name, root: root.to_s)
         end
       end
     end
 
     def find(name)
       load_path.each do |path|
-        file = File.join(path, *name.split(":"), FILENAME)
-        return Command.new(name: name, file: file) if File.exist?(file)
+        file = File.join(path, *name.split(":"), Command::FILENAME)
+        root = File.dirname(file)
+        return Command.new(name: name, root: root) if File.exist?(file)
       end
 
       nil
