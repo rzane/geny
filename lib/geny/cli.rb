@@ -54,11 +54,11 @@ module Geny
     end
 
     def ui
-      @ui ||= Actions::UI.new(color: color)
+      Actions::UI.new(color: color)
     end
 
     def color
-      @color ||= Pastel.new(enabled: $stdout.tty?)
+      Pastel.new(enabled: $stdout.tty?)
     end
   end
 end
