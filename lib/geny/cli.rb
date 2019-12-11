@@ -1,8 +1,8 @@
 require "argy"
 require "geny"
-require "geny/ui"
 require "geny/registry"
 require "geny/version"
+require "geny/actions/ui"
 
 module Geny
   class CLI

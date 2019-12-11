@@ -1,25 +1,25 @@
-require "geny/templates"
+require "geny/actions/templates"
 
 RSpec.describe Geny::Templates do
   include TemporaryFileHelpers
 
   it "renders" do
     write "hello.erb", "hello world"
-    templates = Geny::Templates.new(root: tmp.to_s)
+    templates = build
     result = templates.render("hello.erb")
     expect(result).to eq("hello world")
   end
 
   it "renders with locals" do
     write "hello.erb", "hello <%= name %>"
-    templates = Geny::Templates.new(root: tmp.to_s, locals: {name: "world"})
+    templates = build(locals: {name: "world"})
     result = templates.render("hello.erb")
     expect(result).to eq("hello world")
   end
 
   it "renders with extra locals" do
     write "hello.erb", "<%= message %> <%= name %>"
-    templates = Geny::Templates.new(root: tmp.to_s, locals: {name: "world"})
+    templates = build(locals: {name: "world"})
     result = templates.render("hello.erb", locals: {message: "hello"})
     expect(result).to eq("hello world")
   end
@@ -34,7 +34,7 @@ RSpec.describe Geny::Templates do
     end
 
     write "hello.erb", "hello <%= name %>"
-    templates = Geny::Templates.new(root: tmp.to_s, helpers: [helper])
+    templates = build(helpers: [helper])
     result = templates.render("hello.erb")
     expect(result).to eq("hello world")
   end
@@ -49,8 +49,12 @@ RSpec.describe Geny::Templates do
     end
 
     write "hello.erb", "hello <%= name %>"
-    templates = Geny::Templates.new(root: tmp.to_s, helpers: [helper])
+    templates = build(helpers: [helper])
     result = templates.render("hello.erb", locals: {name: "world"})
     expect(result).to eq("hello world!")
+  end
+
+  def build(**opts)
+    Geny::Templates.new(root: tmp.to_s, **opts)
   end
 end

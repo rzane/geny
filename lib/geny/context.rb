@@ -1,8 +1,8 @@
-require "geny/ui"
-require "geny/git"
-require "geny/shell"
-require "geny/files"
-require "geny/templates"
+require "geny/actions/ui"
+require "geny/actions/git"
+require "geny/actions/shell"
+require "geny/actions/files"
+require "geny/actions/templates"
 
 require "active_support/core_ext/string/indent"
 require "active_support/core_ext/string/inflections"
