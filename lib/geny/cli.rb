@@ -54,7 +54,7 @@ module Geny
     end
 
     def ui
-      @ui ||= UI.new
+      @ui ||= Actions::UI.new
     end
   end
 end

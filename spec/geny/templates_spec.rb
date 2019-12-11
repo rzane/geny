@@ -1,6 +1,6 @@
 require "geny/actions/templates"
 
-RSpec.describe Geny::Templates do
+RSpec.describe Geny::Actions::Templates do
   include TemporaryFileHelpers
 
   it "renders" do
@@ -55,6 +55,6 @@ RSpec.describe Geny::Templates do
   end
 
   def build(**opts)
-    Geny::Templates.new(root: tmp.to_s, **opts)
+    Geny::Actions::Templates.new(root: tmp.to_s, **opts)
   end
 end

@@ -19,23 +19,23 @@ module Geny
     end
 
     def ui
-      UI.new
+      Actions::UI.new
     end
 
     def files
-      Files.new
+      Actions::Files.new
     end
 
     def shell
-      Shell.new(ui: ui)
+      Actions::Shell.new(ui: ui)
     end
 
     def git
-      Git.new(shell: shell)
+      Actions::Git.new(shell: shell)
     end
 
     def templates
-      Templates.new(root: command.templates_path)
+      Actions::Templates.new(root: command.templates_path)
     end
 
     def merge(updates)
