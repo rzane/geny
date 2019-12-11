@@ -23,7 +23,7 @@ module Geny
     end
 
     def parse(argv)
-      dsl.parser.parse(argv)
+      dsl.parser.parse(argv).to_h
     end
 
     def run(argv)
