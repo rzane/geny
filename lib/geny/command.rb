@@ -1,5 +1,5 @@
 require "geny/dsl"
-require "geny/context"
+require "geny/context/invoke"
 
 module Geny
   class Command
@@ -31,7 +31,12 @@ module Geny
     end
 
     def invoke(**options)
-      context = Context.new(self, locals: options)
+      context = Context::Invoke.new(
+        helpers: helpers,
+        locals: options
+      )
+
+      context.templates.root = templates_path
       context.instance_eval(&dsl.invoke)
     end
 
