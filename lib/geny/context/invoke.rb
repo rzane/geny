@@ -8,39 +8,24 @@ require "geny/context/base"
 module Geny
   module Context
     class Invoke < Base
+      attr_reader :color
+
+      delegate_all Actions::UI, to: :ui
+      delegate_all Actions::Files, to: :files
+      delegate_all Actions::Shell, to: :shell
+      delegate_all Actions::Git, to: :git, prefix: :git
+      delegate_all Actions::Templates, to: :templates
+
       def initialize(templates_path:, **opts)
         super(opts)
-        @templates_path = templates_path
-      end
 
-      def color
-        Pastel.new(enabled: $stdout.tty?)
+        @color = Pastel.new(enabled: $stdout.tty?)
+        @ui = Actions::UI.new(color: @color)
+        @files = Actions::Files.new
+        @shell = Actions::Shell.new(ui: @ui)
+        @git = Actions::Git.new(shell: @shell)
+        @templates = Actions::Templates.new(root: templates_path, **opts)
       end
-
-      def ui
-        Actions::UI.new(color: color)
-      end
-      delegate_all Actions::UI, to: :ui
-
-      def files
-        Actions::Files.new
-      end
-      delegate_all Actions::Files, to: :files
-
-      def shell
-        Actions::Shell.new(ui: ui)
-      end
-      delegate_all Actions::Shell, to: :shell
-
-      def git
-        Actions::Git.new(shell: shell)
-      end
-      delegate_all Actions::Git, to: :git, prefix: :git
-
-      def templates
-        Actions::Templates.new(context: self, root: @templates_path)
-      end
-      delegate_all Actions::Templates, to: :templates
     end
   end
 end

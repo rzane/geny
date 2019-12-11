@@ -4,9 +4,10 @@ require "geny/context/view"
 module Geny
   module Actions
     class Templates
-      def initialize(root:, context:)
+      def initialize(root:, locals: {}, helpers: [])
         @root = root
-        @context = context
+        @locals = locals
+        @helpers = helpers
       end
 
       def copy(source, *args, **opts)
@@ -37,8 +38,8 @@ module Geny
 
       def build_context(locals: {}, helpers: [], **opts)
         context = Context::View.new(
-          locals: @context.locals.merge(locals),
-          helpers: @context.helpers + helpers
+          locals: @locals.merge(locals),
+          helpers: @helpers + helpers
         )
 
         [context, opts]

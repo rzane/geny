@@ -55,8 +55,6 @@ RSpec.describe Geny::Actions::Templates do
   end
 
   def build(**opts)
-    templates = Geny::Actions::Templates.new(**opts)
-    templates.root = tmp.to_s
-    templates
+    Geny::Actions::Templates.new(root: tmp.to_s, **opts)
   end
 end
