@@ -1,6 +1,6 @@
-require "geny/context/view"
+require "geny/context/base"
 
-RSpec.describe Geny::Context::View do
+RSpec.describe Geny::Context::Base do
   describe "locals" do
     let(:locals) { {value: 1} }
     subject(:context) { build(locals: locals) }
@@ -39,7 +39,7 @@ RSpec.describe Geny::Context::View do
   end
 
   def build(locals: {}, helpers: [])
-    Geny::Context::View.new(
+    Geny::Context::Base.new(
       locals: locals,
       command: instance_double(Geny::Command, helpers: helpers)
     )
