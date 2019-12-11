@@ -2,8 +2,13 @@ parse do
   description "a really useful generator"
   usage "geny <%= name %> [MESSAGE]"
   argument :message, required: true, desc: "the message to print"
+  option :loud, type: :boolean, aliases: ["-l"], desc: "uppercase"
 end
 
 invoke do
-  ui.say message
+  if loud?
+    ui.say message.upcase
+  else
+    ui.say message
+  end
 end
