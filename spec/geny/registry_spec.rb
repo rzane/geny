@@ -39,7 +39,7 @@ RSpec.describe Geny::Registry do
     it "raises when the generator is not found" do
       expect { registry.find!("c") }.to raise_error(
         Geny::NotFoundError,
-        "There doesn't appear to be a generator named 'c'."
+        "There doesn't appear to be a generator named 'c'"
       )
     end
   end

@@ -48,7 +48,7 @@ module Geny
     private
 
     def command_not_found!(name)
-      raise NotFoundError, "There doesn't appear to be a generator named '#{name}'."
+      raise NotFoundError, "There doesn't appear to be a generator named '#{name}'"
     end
   end
 end
