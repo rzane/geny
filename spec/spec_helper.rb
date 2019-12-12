@@ -5,7 +5,6 @@ end
 
 require "bundler/setup"
 require "geny"
-require "pry"
 
 module Helpers
   def module_double(opts)
