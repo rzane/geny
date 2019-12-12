@@ -6,18 +6,20 @@ require "geny/actions/ui"
 
 module Geny
   class CLI
-    attr_reader :registry, :version, :program_name, :description
+    attr_reader :registry, :version, :program_name, :description, :column
 
     def initialize(
       registry: Registry.new,
       version: VERSION,
       program_name: "geny",
-      description: nil
+      description: nil,
+      column: 20
     )
       @registry = registry
       @version = version
       @program_name = program_name
       @description = description
+      @column = column
     end
 
     def run(argv)
@@ -48,12 +50,12 @@ module Geny
         o.on "-v", "--version", "print version and exit"
       end
 
-      ui.say parser.help(column: 20)
+      ui.say parser.help(column: column)
       ui.say color.bold("\nCOMMANDS")
 
       registry.scan.each do |cmd|
         desc = color.dim(cmd.description || "")
-        ui.say "  #{cmd.name.ljust(20)}#{desc}"
+        ui.say "  #{cmd.name.ljust(column)}#{desc}"
       end
     end
 
