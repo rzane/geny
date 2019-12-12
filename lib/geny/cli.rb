@@ -34,6 +34,11 @@ module Geny
       end
     end
 
+    def abort!(message)
+      ui.error(message)
+      exit 1
+    end
+
     private
 
     def print_help

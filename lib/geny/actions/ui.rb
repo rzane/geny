@@ -18,8 +18,8 @@ module Geny
         say "#{@color.send(color, label.rjust(12))}  #{message}"
       end
 
-      def abort!(message)
-        raise AbortError.new("\n #{@color.red("ERROR")}  #{message}")
+      def error(message)
+        stderr.puts "#{@color.red("ERROR:")} #{message}"
       end
     end
   end

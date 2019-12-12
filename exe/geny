@@ -2,9 +2,10 @@
 
 require "geny/cli"
 
+cli = Geny::CLI.new
+
 begin
-  cli = Geny::CLI.new
   cli.run(ARGV)
 rescue Geny::Error, Argy::Error => error
-  abort "ERROR: #{error.message}"
+  cli.abort!(error.message)
 end
