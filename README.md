@@ -1,8 +1,6 @@
-# Geny
+# Geny [![Build Status](https://travis-ci.org/rzane/geny.svg?branch=master)](https://travis-ci.org/rzane/geny)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/geny`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A tool for building code generators.
 
 ## Installation
 
@@ -22,17 +20,42 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+You are tired of writing the boilerplate for new React components. Let's solve that.
 
-## Development
+First, let's create a template at `.geny/react/component/templates/component.erb`:
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```javascript
+import React from "react";
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+export const <%= name %> = props => {
+  return <h1><%= name ></h1>
+}
+```
+
+Next, we'll define our generator at `.geny/react/component/generator.rb`:
+
+```ruby
+parse do
+  description "generate a React component"
+  usage "geny react:component [NAME]"
+  argument :name, required: true, desc: "component name"
+end
+
+invoke do
+  templates.copy "component.erb", "src/components/#{name}.js"
+end
+```
+
+Awesome. Run it:
+
+    $ geny react:component Logo
+            create  src/components/Logo.js
+
+Obviously, this is a simple example. But Geny comes with a lot of tools to help you build really great code generators with minimal effort.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/geny. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/rzane/geny. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -40,4 +63,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Geny project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/geny/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Geny project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/rzane/geny/blob/master/CODE_OF_CONDUCT.md).
