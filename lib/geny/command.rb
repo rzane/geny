@@ -38,6 +38,7 @@ module Geny
     end
 
     def invoke(**options)
+      options = parser.default_values.merge(options)
       parser.validate!(options)
       invoke!(options)
     end
