@@ -1,8 +1,13 @@
 module Geny
-  Error = Class.new(StandardError)
-  ParserError = Class.new(Error)
-  NotFoundError = Class.new(Error)
+  # A base class for all errors
+  class Error < StandardError
+  end
 
+  # Raised when a command cannot be found.
+  class NotFoundError < Error
+  end
+
+  # Raised when a shell command exits with a non-zero status.
   class ExitError < Error
     attr_reader :code, :command
 

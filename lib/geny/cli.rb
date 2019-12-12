@@ -6,8 +6,32 @@ require "geny/actions/ui"
 
 module Geny
   class CLI
-    attr_reader :registry, :version, :program_name, :description, :column
+    # The registry used for locating commands
+    # @return [Registry]
+    attr_reader :registry
 
+    # The version of your program
+    # @return [String]
+    attr_reader :version
+
+    # The name of your program
+    # @return [String]
+    attr_reader :program_name
+
+    # A description for your program
+    # @return [String]
+    attr_reader :description
+
+    # The column width for help information
+    # @return [Integer]
+    attr_reader :column
+
+    # Create a new CLI
+    # @param registry [Registry]
+    # @param version [String]
+    # @param program_name [String]
+    # @param description [String]
+    # @param column [Integer]
     def initialize(
       registry: Registry.new,
       version: VERSION,
@@ -22,6 +46,8 @@ module Geny
       @column = column
     end
 
+    # Parse arguments and invoke a command
+    # @param argv [Array<String>]
     def run(argv)
       opts = parser.parse(argv, strategy: :order)
       help! unless opts.command?
@@ -30,6 +56,9 @@ module Geny
       command.run(opts.unused_args)
     end
 
+    # Print an error and abort the program.
+    # @param message [String] error message
+    # @raise [SystemExit]
     def abort!(message)
       color = Pastel.new(enabled: $stdout.tty?)
       ui = Actions::UI.new(color: color)

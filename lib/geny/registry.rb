@@ -4,18 +4,26 @@ require "geny/command"
 
 module Geny
   class Registry
+    # The default load path. By default, Geny
+    # will search
     LOAD_PATH = [
       File.join(Dir.pwd, ".geny"),
       *ENV.fetch("CODE_HEN_PATH", "").split(":"),
       File.expand_path("../generators", __dir__)
     ]
 
+    # The directories to search for commands in
+    # @return [Array<String>]
     attr_reader :load_path
 
+    # Create a new registry
+    # @param load_path [Array<String>]
     def initialize(load_path: LOAD_PATH)
       @load_path = load_path
     end
 
+    # Iterate over all load paths and find all commands
+    # @return [Array<Command>]
     def scan
       glob = File.join("**", Command::FILENAME)
 
@@ -33,6 +41,9 @@ module Geny
       commands.sort_by(&:name)
     end
 
+    # Find a command by name
+    # @param name [String] name of the command
+    # @return [Command,nil]
     def find(name)
       load_path.each do |path|
         file = File.join(path, *name.split(":"), Command::FILENAME)
@@ -43,6 +54,10 @@ module Geny
       nil
     end
 
+    # Find a command by name or raise an error
+    # @param name [String] name of the command
+    # @raise [NotFoundError] when the command is not found
+    # @return [Command]
     def find!(name)
       find(name) || command_not_found!(name)
     end

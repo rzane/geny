@@ -1,5 +1,6 @@
 module Geny
   module Context
+    # @api private
     class Base
       attr_reader :command, :locals
 

@@ -3,11 +3,20 @@ require "geny/error"
 
 module Geny
   module Actions
+    # Utilities for executing shell commands
     class Shell
+      # Create a new shell
+      # @param ui [UI]
       def initialize(ui:)
         @ui = ui
       end
 
+      # Run a shell command and return it's output
+      # @raise [ExitError] when the command exits with a non-zero status
+      # @return [String]
+      #
+      # @example
+      #   shell.capture("echo", "hello") #=> "hello"
       def capture(*args, **opts)
         cmd = build_command(*args, **opts)
         cmd_str = stringify_command(args)
@@ -18,6 +27,11 @@ module Geny
         raise ExitError.new(command: cmd_str, code: 127)
       end
 
+      # Run a shell command
+      # @raise [ExitError] when the command exits with a non-zero status
+      #
+      # @example
+      #   shell.capture("echo", "hello") # prints "hello"
       def run(*args, verbose: true, **opts)
         cmd = build_command(*args, **opts)
         cmd_str = stringify_command(args)
