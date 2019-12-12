@@ -19,7 +19,7 @@ module Geny
     def scan
       glob = File.join("**", Command::FILENAME)
 
-      load_path.flat_map do |path|
+      commands = load_path.flat_map do |path|
         path = Pathname.new(path)
 
         path.glob(glob).map do |file|
@@ -29,6 +29,8 @@ module Geny
           Command.new(name: name, root: root.to_s)
         end
       end
+
+      commands.sort_by(&:name)
     end
 
     def find(name)
