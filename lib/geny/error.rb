@@ -2,6 +2,7 @@ module Geny
   Error = Class.new(StandardError)
   ParserError = Class.new(Error)
   NotFoundError = Class.new(Error)
+  AbortError = Class.new(ERROR)
 
   class ExitError < Error
     attr_reader :code, :command

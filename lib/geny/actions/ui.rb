@@ -17,6 +17,10 @@ module Geny
       def status(label, message, color: :green)
         say "#{@color.send(color, label.rjust(12))}  #{message}"
       end
+
+      def abort!(message)
+        raise AbortError.new("\n #{@color.red("ERROR")}  #{message}")
+      end
     end
   end
 end
