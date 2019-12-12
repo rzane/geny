@@ -23,48 +23,48 @@ module Geny
     end
 
     def run(argv)
-      command_name, *command_args = argv
+      opts = parser.parse(argv, strategy: :order)
+      help! unless opts.command?
 
-      case command_name
-      when nil, '-h', '--help'
-        print_help
-      when '-v', '--version'
-        ui.say version
-      else
-        command = registry.find!(command_name)
-        command.run(command_args)
-      end
+      command = registry.find!(opts.command)
+      command.run(opts.unused_args)
     end
 
     def abort!(message)
+      color = Pastel.new(enabled: $stdout.tty?)
+      ui = Actions::UI.new(color: color)
       ui.abort!(message)
     end
 
     private
 
-    def print_help
-      parser = Argy.new do |o|
-        o.usage("#{program_name} [COMMAND]")
-        o.description(description)
-        o.argument :command, desc: "generator to run", required: true
-        o.on "-v", "--version", "print version and exit"
-      end
+    def parser
+      @parser ||= Argy.new do |o|
+        o.usage "#{program_name} [COMMAND]"
+        o.description description
+        o.argument :command, desc: "generator to run"
 
-      ui.say parser.help(column: column)
-      ui.say color.bold("\nCOMMANDS")
+        o.on "-v", "--version", "print version and exit" do
+          puts version
+          exit
+        end
+
+        o.on "-h", "--help", "show this help and exit" do
+          help!
+        end
+      end
+    end
+
+    def help!
+      help = parser.help(column: column)
+      puts help
+      puts help.section("COMMANDS")
 
       registry.scan.each do |cmd|
-        desc = color.dim(cmd.description || "")
-        ui.say "  #{cmd.name.ljust(column)}#{desc}"
+        puts help.entry(cmd.name, desc: cmd.description)
       end
-    end
 
-    def ui
-      Actions::UI.new(color: color)
-    end
-
-    def color
-      Pastel.new(enabled: $stdout.tty?)
+      exit
     end
   end
 end

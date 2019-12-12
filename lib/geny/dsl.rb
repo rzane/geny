@@ -9,7 +9,12 @@ module Geny
     end
 
     def parser
-      @parser ||= Argy.new
+      @parser ||= Argy.new do |o|
+        o.on "-h", "--help", "show this help and exit" do
+          puts o.help
+          exit
+        end
+      end
     end
 
     def parse(&block)
