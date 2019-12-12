@@ -35,8 +35,7 @@ module Geny
     end
 
     def abort!(message)
-      ui.error(message)
-      exit 1
+      ui.abort!(message)
     end
 
     private

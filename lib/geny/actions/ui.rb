@@ -21,6 +21,11 @@ module Geny
       def error(message)
         stderr.puts "#{@color.red("ERROR:")} #{message}"
       end
+
+      def abort!(message)
+        error(message)
+        exit 1
+      end
     end
   end
 end
