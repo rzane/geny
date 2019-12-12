@@ -1,3 +1,4 @@
+require "pastel"
 require "geny/context/base"
 require "geny/actions/ui"
 require "geny/actions/git"

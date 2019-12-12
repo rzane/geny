@@ -1,11 +1,12 @@
-require "pastel"
+require "tty-prompt"
 
 module Geny
   module Actions
-    class UI
+    class UI < TTY::Prompt
       attr_reader :color
 
-      def initialize(color:)
+      def initialize(color:, **opts)
+        super(opts)
         @color = color
       end
 
@@ -15,10 +16,6 @@ module Geny
 
       def status(label, message, color: :green)
         say "#{@color.send(color, label.rjust(12))}  #{message}"
-      end
-
-      def say(message)
-        puts message
       end
     end
   end

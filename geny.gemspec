@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "argy", "~> 0.2.0"
   spec.add_dependency "pastel", "~> 0.7.3"
   spec.add_dependency "tty-file", "~> 0.8.0"
+  spec.add_dependency "tty-prompt", "~> 0.20.0"
 
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "rake", "~> 10.0"

@@ -10,6 +10,7 @@ PATH
       argy (~> 0.2.0)
       pastel (~> 0.7.3)
       tty-file (~> 0.8.0)
+      tty-prompt (~> 0.20.0)
 
 GEM
   remote: https://rubygems.org/
