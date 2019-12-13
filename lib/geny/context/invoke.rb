@@ -5,6 +5,7 @@ require "geny/actions/geny"
 require "geny/actions/git"
 require "geny/actions/shell"
 require "geny/actions/files"
+require "geny/actions/find"
 require "geny/actions/templates"
 
 module Geny
@@ -30,6 +31,12 @@ module Geny
       # @return [Actions::Files]
       def files
         Actions::Files.new
+      end
+
+      # A utility for bulk find-and-replace operations
+      # @return [Actions::Find]
+      def find
+        Actions::Find.new
       end
 
       # A utility for running shell commands
