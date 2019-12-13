@@ -17,6 +17,10 @@ module Geny
     # @return [String]
     attr_reader :root
 
+    # The registry that was used to find this command
+    # @return [Registry]
+    attr_reader :registry
+
     # Create a new command
     # @param registry [Registry] registry used to find this command
     # @param name [String] name of the command
@@ -24,6 +28,7 @@ module Geny
     def initialize(name:, root:, registry:)
       @name = name
       @root = root
+      @registry = registry
     end
 
     # The path where the command is located

@@ -24,6 +24,10 @@ RSpec.describe Geny::Command do
     expect(command.root).to eq(root)
   end
 
+  it "has a registry" do
+    expect(command.registry).to be_a(Geny::Registry)
+  end
+
   it "has a file" do
     expect(command.file).to eq(file)
   end
