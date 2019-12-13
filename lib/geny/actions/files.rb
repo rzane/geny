@@ -10,6 +10,7 @@ module Geny
 
       # @!method create
       # Create a file
+      # @see TTY::File.create
       #
       # @example
       #   files.create("test.txt")
@@ -19,6 +20,7 @@ module Geny
 
       # @!method create_dir
       # Create a directory recursively
+      # @see TTY::File.create_dir
       #
       # @example
       #   files.create_dir("app/controllers")
@@ -26,6 +28,7 @@ module Geny
 
       # @!method remove
       # Remove a file
+      # @see TTY::File.remove_file
       #
       # @example
       #   files.remove("test.txt")
@@ -34,6 +37,7 @@ module Geny
 
       # @!method prepend
       # Add a line to the top of a file
+      # @see TTY::File.safe_prepend_to_file
       #
       # @example
       #   files.prepend("Gemfile", "gem 'geny'")
@@ -41,6 +45,7 @@ module Geny
 
       # @!method append
       # Add a line to the bottom of a file
+      # @see TTY::File.safe_append_to_file
       #
       # @example
       #   files.append("Gemfile", "gem 'geny'")
@@ -48,6 +53,7 @@ module Geny
 
       # @!method replace
       # Replace content in a file
+      # @see TTY::File.replace_in_file
       #
       # @example
       #   files.replace("Gemfile", /foo/, "bar")
@@ -55,6 +61,7 @@ module Geny
 
       # @!method insert
       # Insert content in a file before or after a matching pattern
+      # @see TTY::File.safe_inject_into_file
       #
       # @example
       #   files.insert("Gemfile", "gem 'geny'", before: /gem 'rails'/)
@@ -62,6 +69,7 @@ module Geny
       def_delegator TTY::File, :safe_inject_into_file, :insert
 
       # Change the permissions of a file
+      # @see TTY::File.chmod
       #
       # @example
       #   files.chmod("bin/test", "+x")
