@@ -12,7 +12,26 @@ RSpec.describe Geny::Actions::Find do
   it "replaces matching filenames" do
     write "hello.txt"
     find.and_rename(tmp.to_s, "hello", "goodbye")
-    expect(tmp.join("hello.txt")).not_to be_file
-    expect(tmp.join("goodbye.txt")).to be_file
+    expect(entries).to eq %w[goodbye.txt]
+  end
+
+  it "replaces deeply nested matching filenames" do
+    write "hello.txt"
+    write "hello/hello.txt"
+    write "hello/hello/hello.txt"
+    find.and_rename(tmp.to_s, "hello", "goodbye")
+
+    expect(entries).to eq %w[
+      goodbye.txt
+      goodbye/goodbye.txt
+      goodbye/goodbye/goodbye.txt
+    ]
+  end
+
+  def entries
+    tmp.glob("**/*")
+       .select(&:file?)
+       .map { |path| path.relative_path_from(tmp) }
+       .map(&:to_s)
   end
 end
