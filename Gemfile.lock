@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    geny (0.1.0)
+    geny (1.0.0)
       argy (~> 0.2.2)
       pastel (~> 0.7.3)
       tty-file (~> 0.8.0)
