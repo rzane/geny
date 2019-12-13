@@ -5,13 +5,13 @@ RSpec.describe Geny::Actions::Find do
 
   it "replaces matching files" do
     write "a.txt", "hello"
-    find.and_replace(tmp.to_s, "hello", "goodbye")
+    find.replace(tmp.to_s, "hello", "goodbye")
     expect(tmp.join("a.txt").read).to eq("goodbye")
   end
 
   it "replaces matching filenames" do
     write "hello.txt"
-    find.and_rename(tmp.to_s, "hello", "goodbye")
+    find.rename(tmp.to_s, "hello", "goodbye")
     expect(entries).to eq %w[goodbye.txt]
   end
 
@@ -19,7 +19,7 @@ RSpec.describe Geny::Actions::Find do
     write "hello.txt"
     write "hello/hello.txt"
     write "hello/hello/hello.txt"
-    find.and_rename(tmp.to_s, "hello", "goodbye")
+    find.rename(tmp.to_s, "hello", "goodbye")
 
     expect(entries).to eq %w[
       goodbye.txt

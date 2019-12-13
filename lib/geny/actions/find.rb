@@ -15,8 +15,8 @@ module Geny
       # @note This attempts to ignore binary files
       #
       # @example
-      #   find.and_replace("src", "Boilerplate", "YourProject")
-      def and_replace(root, pattern, replacement, force: false, excluding: nil)
+      #   find.replace("src", "Boilerplate", "YourProject")
+      def replace(root, pattern, replacement, force: false, excluding: nil)
         ::Find.find(root)
           .lazy
           .reject { |path| path == root }
@@ -42,8 +42,8 @@ module Geny
       # @param excluding [Regexp] exclude any file matching this pattern
       #
       # @example
-      #   find.and_rename("src", "Boilerplate", "YourProject")
-      def and_rename(root, pattern, replacement, force: false, excluding: nil)
+      #   find.rename("src", "Boilerplate", "YourProject")
+      def rename(root, pattern, replacement, force: false, excluding: nil)
         ::Find.find(root)
           .lazy
           .reject { |path| path == root }
