@@ -1,6 +1,7 @@
 require "pastel"
 require "geny/context/base"
 require "geny/actions/ui"
+require "geny/actions/geny"
 require "geny/actions/git"
 require "geny/actions/shell"
 require "geny/actions/files"
@@ -50,6 +51,11 @@ module Geny
           root: command.templates_path,
           view: View.new(command: command, locals: locals)
         )
+      end
+
+      # A utility for invoking other generators
+      def geny
+        Actions::Geny.new(registry: command.registry)
       end
     end
   end

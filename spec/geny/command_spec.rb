@@ -6,9 +6,14 @@ RSpec.describe Geny::Command do
   let(:root) { tmp.join("foo").to_s }
   let(:file) { tmp.join("foo/generator.rb").to_s }
   let(:templates) { tmp.join("foo/templates").to_s }
+  let(:registry) { instance_double(Geny::Registry) }
 
   subject(:command) {
-    Geny::Command.new(name: name, root: root)
+    Geny::Command.new(
+      name: name,
+      root: root,
+      registry: registry
+    )
   }
 
   it "has a name" do
@@ -71,6 +76,14 @@ RSpec.describe Geny::Command do
     expect(options).to eq(value: 99, value?: true)
   end
 
+  it "raises when invoked with invalid arguments" do
+    command.define do
+      parse { option :value, required: true }
+    end
+
+    expect { command.run([]) }.to raise_error(Argy::ValidationError)
+  end
+
   it "can be invoked with options" do
     options = {}
     command.define do
@@ -80,5 +93,13 @@ RSpec.describe Geny::Command do
 
     command.invoke(value: 99)
     expect(options).to eq(value: 99, value?: true)
+  end
+
+  it "raises when invoked with invalid options" do
+    command.define do
+      parse { option :value, required: true }
+    end
+
+    expect { command.invoke }.to raise_error(Argy::ValidationError)
   end
 end

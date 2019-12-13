@@ -18,9 +18,10 @@ module Geny
     attr_reader :root
 
     # Create a new command
+    # @param registry [Registry] registry used to find this command
     # @param name [String] name of the command
     # @param root [String] name of the command
-    def initialize(name:, root:)
+    def initialize(name:, root:, registry:)
       @name = name
       @root = root
     end

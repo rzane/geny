@@ -34,7 +34,7 @@ module Geny
           root = file.dirname
           name = root.relative_path_from(path)
           name = name.to_s.tr(File::SEPARATOR, ":")
-          Command.new(name: name, root: root.to_s)
+          build(name, root.to_s)
         end
       end
 
@@ -48,7 +48,7 @@ module Geny
       load_path.each do |path|
         file = File.join(path, *name.split(":"), Command::FILENAME)
         root = File.dirname(file)
-        return Command.new(name: name, root: root) if File.exist?(file)
+        return build(name, root) if File.exist?(file)
       end
 
       nil
@@ -63,6 +63,10 @@ module Geny
     end
 
     private
+
+    def build(name, root)
+      Command.new(name: name, root: root, registry: self)
+    end
 
     def command_not_found!(name)
       raise NotFoundError, "There doesn't appear to be a generator named '#{name}'"
