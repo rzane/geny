@@ -4,6 +4,7 @@ require "tty-file"
 
 module Geny
   module Actions
+    # Utilities for manipulating files in bulk
     class Find
       # Replace the content of any file that matches the pattern with
       # a replacement
