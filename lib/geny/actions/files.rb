@@ -1,3 +1,4 @@
+require "forwardable"
 require "tty-file"
 
 module Geny
@@ -5,74 +6,60 @@ module Geny
     # Utilities for manipulating files.
     # @see https://rubydoc.info/github/piotrmurach/tty-file/master/TTY/File TTY::File
     class Files
+      extend Forwardable
+
+      # @!method create
       # Create a file
       #
       # @example
       #   files.create("test.txt")
       #   files.create("test.txt", "hello!")
       #   files.remove("test.txt", force: true)
-      def create(*args)
-        TTY::File.create_file(*args)
-      end
+      def_delegator TTY::File, :create_file, :create
 
+      # @!method create_dir
       # Create a directory recursively
       #
       # @example
       #   files.create_dir("app/controllers")
-      def create_dir(*args)
-        TTY::File.create_dir(*args)
-      end
+      def_delegator TTY::File, :create_dir
 
+      # @!method remove
       # Remove a file
       #
       # @example
-      #   files.remove("tmp")
-      #   files.remove("tmp", force: true)
-      def remove(*args)
-        TTY::File.remove_file(*args)
-      end
+      #   files.remove("test.txt")
+      #   files.remove("test.txt", force: true)
+      def_delegator TTY::File, :remove_file, :remove
 
+      # @!method prepend
       # Add a line to the top of a file
       #
       # @example
       #   files.prepend("Gemfile", "gem 'geny'")
-      def prepend(*args)
-        TTY::File.safe_prepend_to_file(*args)
-      end
+      def_delegator TTY::File, :safe_prepend_to_file, :prepend
 
+      # @!method append
       # Add a line to the bottom of a file
       #
       # @example
       #   files.append("Gemfile", "gem 'geny'")
-      def append(*args)
-        TTY::File.safe_append_to_file(*args)
-      end
+      def_delegator TTY::File, :safe_append_to_file, :append
 
+      # @!method replace
       # Replace content in a file
       #
       # @example
       #   files.replace("Gemfile", /foo/, "bar")
-      def replace(*args)
-        TTY::File.replace_in_file(*args)
-      end
+      def_delegator TTY::File, :replace_in_file, :replace
 
-      # Insert a line before a matching line in a file
+      # @!method insert
+      # Insert content in a file before or after a matching pattern
       #
       # @example
-      #   files.insert_before("Gemfile", /gem "rails"/, "gem 'geny'")
-      def insert_before(path, pattern, content, **opts)
-        opts = {before: pattern, **opts}
-        TTY::File.safe_inject_into_file(path, content, opts)
-      end
-
-      # Insert a line after a matching line in a file
-      #
-      # @example
-      #   files.insert_after("Gemfile", /gem "rails"\n/, "gem 'geny'")
-      def insert_after(path, pattern, content, **opts)
-        opts = {after: pattern, **opts}
-        TTY::File.safe_inject_into_file(path, content, opts)
-      end
+      #   files.insert("Gemfile", "gem 'geny'", before: /gem 'rails'/)
+      #   files.insert("Gemfile", "gem 'geny'", after: /gem 'rails'\n/)
+      def_delegator TTY::File, :safe_inject_into_file, :insert
 
       # Change the permissions of a file
       #

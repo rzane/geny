@@ -43,13 +43,13 @@ RSpec.describe Geny::Actions::Files do
 
   it "inserts before a matching line in a file" do
     write file, "bye"
-    files.insert_before(file, /bye/, "hi", verbose: false)
+    files.insert(file, "hi", before: /bye/, verbose: false)
     expect(file.read).to eq("hibye")
   end
 
   it "inserts after a matching line in a file" do
     write file, "hi"
-    files.insert_after(file, /hi/, "bye", verbose: false)
+    files.insert(file, "bye", after: /hi/, verbose: false)
     expect(file.read).to eq("hibye")
   end
 
