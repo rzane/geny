@@ -28,6 +28,13 @@ RSpec.describe Geny::Actions::Find do
     ]
   end
 
+  it "replaces deeply nested matching directories" do
+    write "hello/hello/foo.txt"
+    find.rename(tmp.to_s, "hello", "goodbye")
+    expect(entries).to eq %w[goodbye/goodbye/foo.txt]
+  end
+
+
   def entries
     tmp.glob("**/*")
        .select(&:file?)
