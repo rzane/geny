@@ -58,6 +58,9 @@ module Geny
 
     # Parse command-line options
     # @param argv [Array<String>]
+    # @raise [Argy::ParseError] when the arguments are invalid
+    # @raise [Argy::CoersionError] when the arguments cannot be coerced
+    # @raise [Argy::ValidationError] when required arguments are missing
     # @return [Argy::Options]
     def parse(argv)
       parser.parse(argv)
@@ -71,6 +74,7 @@ module Geny
     end
 
     # Invoke a command with options
+    # @raise [Argy::ValidationError] when required arguments are missing
     # @param options [Hash{Symbol => Object}]
     def invoke(**options)
       options = parser.default_values.merge(options)
