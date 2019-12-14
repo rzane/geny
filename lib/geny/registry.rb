@@ -4,13 +4,17 @@ require "geny/command"
 
 module Geny
   class Registry
-    # The default load path. By default, Geny
-    # will search
-    LOAD_PATH = [
-      File.join(Dir.pwd, ".geny"),
-      *ENV.fetch("GENY_PATH", "").split(Command::SEPARATOR),
-      File.join(__dir__, "generators")
-    ]
+    # The load path for project-local generators
+    LOCAL_PATH = [File.join(Dir.pwd, ".geny")]
+
+    # The load path that is read from ENV vars
+    ENV_PATH = ENV.fetch("GENY_PATH", "").split(":")
+
+    # The load path for Geny's own generators
+    GENY_PATH = [File.join(__dir__, "generators")]
+
+    # The default load path. By default, Geny will search
+    LOAD_PATH = LOCAL_PATH + ENV_PATH + GENY_PATH
 
     # The directories to search for commands in
     # @return [Array<String>]
