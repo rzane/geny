@@ -17,94 +17,116 @@ RSpec.describe Geny::Command do
     )
   }
 
-  it "has a name" do
-    expect(command.name).to eq(name)
+  describe "#name" do
+    it "has a name" do
+      expect(command.name).to eq(name)
+    end
   end
 
-  it "has a root" do
-    expect(command.root).to eq(root)
+  describe "#root" do
+    it "has a root" do
+      expect(command.root).to eq(root)
+    end
   end
 
-  it "has a registry" do
-    expect(command.registry).not_to be_nil
+  describe "#registry" do
+    it "has a registry" do
+      expect(command.registry).not_to be_nil
+    end
   end
 
-  it "has a file" do
-    expect(command.file).to eq(file)
+  describe "#file" do
+    it "has a file" do
+      expect(command.file).to eq(file)
+    end
   end
 
-  it "has a templates_path" do
-    expect(command.templates_path).to eq(templates)
+  describe "#templates" do
+    it "has a templates_path" do
+      expect(command.templates_path).to eq(templates)
+    end
   end
 
-  it "has a parser" do
-    command.define {}
-    expect(command.parser).to be_an(Argy::Parser)
+  describe "#parser" do
+    it "has a parser" do
+      command.define {}
+      expect(command.parser).to be_an(Argy::Parser)
+    end
   end
 
-  it "has a description" do
-    command.define { parse { description "cool" } }
-    expect(command.description).to eq("cool")
-  end
-
-  it "has helpers" do
-    command.define do
-      helpers {}
-      helpers {}
+  describe "#description" do
+    it "has a description" do
+      command.define { parse { description "cool" } }
+      expect(command.description).to eq("cool")
     end
 
-    expect(command.helpers.length).to be(2)
+    it "is loaded from a file" do
+      write file, "parse { description 'cool' }"
+      expect(command.description).to eq("cool")
+    end
   end
 
-  it "parses arguments" do
-    command.define do
-      parse { option :value, type: :integer }
+  describe "#helpers" do
+    it "has helpers" do
+      command.define do
+        helpers {}
+        helpers {}
+      end
+
+      expect(command.helpers.length).to be(2)
+    end
+  end
+
+  describe "#parse" do
+    it "parses arguments" do
+      command.define do
+        parse { option :value, type: :integer }
+      end
+
+      options = command.parse(["--value", "1"])
+      expect(options.value).to eq(1)
+    end
+  end
+
+  describe "#run" do
+    it "can be run with arguments" do
+      options = {}
+      command.define do
+        parse { option :value, type: :integer }
+        invoke { options.merge!(value: value, value?: value?) }
+      end
+
+      command.run(["--value", "99"])
+      expect(options).to eq(value: 99, value?: true)
     end
 
-    options = command.parse(["--value", "1"])
-    expect(options.value).to eq(1)
+    it "raises when invoked with invalid arguments" do
+      command.define do
+        parse { option :value, required: true }
+      end
+
+      expect { command.run([]) }.to raise_error(Argy::ValidationError)
+    end
   end
 
-  it "loads the command from a file" do
-    write file, "parse { description 'cool' }"
-    expect(command.description).to eq("cool")
-  end
+  describe "#invoke" do
+    it "can be invoked with options" do
+      options = {}
+      command.define do
+        parse { option :value, type: :integer }
+        invoke { options.merge!(value: value, value?: value?) }
+      end
 
-  it "can be run with arguments" do
-    options = {}
-    command.define do
-      parse { option :value, type: :integer }
-      invoke { options.merge!(value: value, value?: value?) }
+      command.invoke(value: 99)
+      expect(options).to eq(value: 99, value?: true)
     end
 
-    command.run(["--value", "99"])
-    expect(options).to eq(value: 99, value?: true)
-  end
+    it "raises when invoked with invalid options" do
+      command.define do
+        parse { option :value, required: true }
+      end
 
-  it "raises when invoked with invalid arguments" do
-    command.define do
-      parse { option :value, required: true }
+      expect { command.invoke }.to raise_error(Argy::ValidationError)
     end
-
-    expect { command.run([]) }.to raise_error(Argy::ValidationError)
-  end
-
-  it "can be invoked with options" do
-    options = {}
-    command.define do
-      parse { option :value, type: :integer }
-      invoke { options.merge!(value: value, value?: value?) }
-    end
-
-    command.invoke(value: 99)
-    expect(options).to eq(value: 99, value?: true)
-  end
-
-  it "raises when invoked with invalid options" do
-    command.define do
-      parse { option :value, required: true }
-    end
-
-    expect { command.invoke }.to raise_error(Argy::ValidationError)
   end
 end

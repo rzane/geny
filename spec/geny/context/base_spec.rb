@@ -34,7 +34,4 @@ RSpec.describe Geny::Context::Base do
   it "does not respond to non-locals" do
     expect(context.respond_to?(:trash)).to be(false)
   end
-
-  describe "#method_missing" do
-  end
 end
