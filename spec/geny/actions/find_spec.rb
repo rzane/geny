@@ -15,7 +15,7 @@ RSpec.describe Geny::Actions::Find do
     it "replaces matching filenames" do
       write "hello.txt"
       find.rename(tmp.to_s, "hello", "goodbye")
-      expect(entries).to eq %w[goodbye.txt]
+      expect(entries).to match_array %w[goodbye.txt]
     end
 
     it "replaces deeply nested matching filenames" do
@@ -24,7 +24,7 @@ RSpec.describe Geny::Actions::Find do
       write "hello/hello/hello.txt"
       find.rename(tmp.to_s, "hello", "goodbye")
 
-      expect(entries).to eq %w[
+      expect(entries).to match_array %w[
         goodbye.txt
         goodbye/goodbye.txt
         goodbye/goodbye/goodbye.txt
@@ -34,7 +34,7 @@ RSpec.describe Geny::Actions::Find do
     it "replaces deeply nested matching directories" do
       write "hello/hello/foo.txt"
       find.rename(tmp.to_s, "hello", "goodbye")
-      expect(entries).to eq %w[goodbye/goodbye/foo.txt]
+      expect(entries).to match_array %w[goodbye/goodbye/foo.txt]
     end
   end
 
