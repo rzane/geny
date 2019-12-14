@@ -27,27 +27,39 @@ RSpec.describe Geny::CLI do
   end
 
   it "outputs help with no arguments" do
-    expect { cli.run([]) }.to output(/USAGE/).to_stdout
+    expect {
+      cli.run([])
+    }.to output(/USAGE/).to_stdout.and raise_error(SystemExit)
   end
 
   it "outputs help with -h" do
-    expect { cli.run(["-h"]) }.to output(/USAGE/).to_stdout
+    expect {
+      cli.run(["-h"])
+    }.to output(/USAGE/).to_stdout.and raise_error(SystemExit)
   end
 
   it "outputs help with --help" do
-    expect { cli.run(["--help"]) }.to output(/USAGE/).to_stdout
+    expect {
+      cli.run(["--help"])
+    }.to output(/USAGE/).to_stdout.and raise_error(SystemExit)
   end
 
   it "outputs version with -v" do
-    expect { cli.run(["-v"]) }.to output("#{Geny::VERSION}\n").to_stdout
+    expect {
+      cli.run(["-v"])
+    }.to output("#{Geny::VERSION}\n").to_stdout.and raise_error(SystemExit)
   end
 
   it "outputs version with --version" do
-    expect { cli.run(["--version"]) }.to output("#{Geny::VERSION}\n").to_stdout
+    expect {
+      cli.run(["--version"])
+    }.to output("#{Geny::VERSION}\n").to_stdout.and raise_error(SystemExit)
   end
 
   it "shows the list of generators in the help" do
     write "foo/bar/generator.rb"
-    expect { cli.run(["-h"]) }.to output(/COMMANDS\n  foo:bar/).to_stdout
+    expect {
+      cli.run(["-h"])
+    }.to output(/COMMANDS\n  foo:bar/).to_stdout.and raise_error(SystemExit)
   end
 end
