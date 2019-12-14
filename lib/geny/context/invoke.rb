@@ -61,6 +61,7 @@ module Geny
       end
 
       # A utility for invoking other generators
+      # @return [Actions::Geny]
       def geny
         Actions::Geny.new(registry: command.registry)
       end
