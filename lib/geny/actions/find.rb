@@ -18,21 +18,27 @@ module Geny
       # @example
       #   find.replace("src", "Boilerplate", "YourProject")
       def replace(root, pattern, replacement, force: false, excluding: nil)
-        ::Find.find(root)
-          .lazy
-          .reject { |path| path == root }
-          .reject { |path| excluding && path.match?(excluding) }
-          .reject { |path| File.directory?(path) }
-          .reject { |path| TTY::File.binary?(path) }
-          .each do |path|
-            TTY::File.replace_in_file(
-              path,
-              pattern,
-              replacement,
-              verbose: false,
-              force: force
-            )
-          end
+        ::Find.find(root) do |path|
+          # The first emitted path will be the root directory
+          next if path == root
+
+          # Don't look any further into this directory
+          ::Find.prune if excluding && excluding.match?(excluding)
+
+          # We don't care about directories
+          next if File.directory?(path)
+
+          # We can't replace binary files
+          next if TTY::File.binary?(path)
+
+          TTY::File.replace_in_file(
+            path,
+            pattern,
+            replacement,
+            verbose: false,
+            force: force
+          )
+        end
       end
 
       # Replace any filename that matches the pattern with a replacement
@@ -45,28 +51,32 @@ module Geny
       # @example
       #   find.rename("src", "Boilerplate", "YourProject")
       def rename(root, pattern, replacement, force: false, excluding: nil)
-        ::Find.find(root)
-          .lazy
-          .reject { |path| path == root }
-          .reject { |path| excluding && path.match?(excluding) }
-          .select { |path| path.match?(pattern) }
-          .sort { |path| depth(path) }
-          .map { |path| [path, rsub(path, pattern, replacement)] }
-          .each { |source, dest| FileUtils.mv(source, dest) }
-      end
+        matches = []
+        options = {force: force, excluding: nil}
 
-      private
+        ::Find.find(root) do |path|
+          # The first emitted path will be the root directory
+          next if path == root
 
-      # Replace the last match of a string
-      def rsub(str, pattern, replacement)
-        prefix, match, suffix = str.rpartition(pattern)
-        return str if prefix.empty? and match.empty?
-        "#{prefix}#{replacement}#{suffix}"
-      end
+          # Don't look any further into this directory
+          ::Find.prune if excluding && excluding.match?(excluding)
 
-      # Get the depth of a path
-      def depth(path)
-        path.split(File::SEPARATOR).length
+          # The path doesn't match, keep searching
+          next unless path.match?(pattern)
+
+          # Record the match
+          matches << path
+
+          # Don't search the children of the match, because it will
+          # be renamed. We'll have re-run against the renamed path
+          ::Find.prune
+        end
+
+        matches.each do |source|
+          dest = source.sub(pattern, replacement)
+          FileUtils.mv(source, dest, force: force)
+          rename(dest, pattern, replacement, options) if File.directory?(dest)
+        end
       end
     end
   end

@@ -34,7 +34,6 @@ RSpec.describe Geny::Actions::Find do
     expect(entries).to eq %w[goodbye/goodbye/foo.txt]
   end
 
-
   def entries
     tmp.glob("**/*")
        .select(&:file?)
