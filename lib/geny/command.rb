@@ -6,6 +6,9 @@ module Geny
     # The filename for a generator, relative to the root
     FILENAME = "generator.rb"
 
+    # Nested commands are joined with colon
+    SEPARATOR = ":"
+
     # The directory where templates are stored, relative to the root
     TEMPLATES = "templates"
 

@@ -8,8 +8,8 @@ module Geny
     # will search
     LOAD_PATH = [
       File.join(Dir.pwd, ".geny"),
-      *ENV.fetch("CODE_HEN_PATH", "").split(":"),
-      File.expand_path("../generators", __dir__)
+      *ENV.fetch("GENY_PATH", "").split(Command::SEPARATOR),
+      File.join(__dir__, "generators")
     ]
 
     # The directories to search for commands in
@@ -33,7 +33,7 @@ module Geny
         path.glob(glob).map do |file|
           root = file.dirname
           name = root.relative_path_from(path)
-          name = name.to_s.tr(File::SEPARATOR, ":")
+          name = name.to_s.tr(File::SEPARATOR, Command::SEPARATOR)
           build(name, root.to_s)
         end
       end
@@ -46,7 +46,8 @@ module Geny
     # @return [Command,nil]
     def find(name)
       load_path.each do |path|
-        file = File.join(path, *name.split(":"), Command::FILENAME)
+        parts = name.split(Command::SEPARATOR)
+        file = File.join(path, *parts, Command::FILENAME)
         root = File.dirname(file)
         return build(name, root) if File.exist?(file)
       end
