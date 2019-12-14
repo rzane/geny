@@ -1,3 +1,4 @@
+require "geny/command"
 require "geny/context/base"
 
 RSpec.describe Geny::Context::Base do

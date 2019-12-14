@@ -26,7 +26,8 @@ module Geny
 
     # Define helper methods. These methods are available within
     # the {#invoke} block and all templates.
-    def helpers(&block)
+    def helpers(*modules, &block)
+      @helpers += modules unless modules.empty?
       @helpers << Module.new(&block) if block_given?
       @helpers
     end

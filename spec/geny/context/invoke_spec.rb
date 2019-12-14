@@ -1,3 +1,4 @@
+require "geny/command"
 require "geny/context/invoke"
 
 RSpec.describe Geny::Context::Invoke do
@@ -22,6 +23,8 @@ RSpec.describe Geny::Context::Invoke do
       color
       command
       files
+      find
+      geny
       git
       locals
       shell

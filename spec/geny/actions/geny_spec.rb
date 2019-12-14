@@ -1,3 +1,5 @@
+require "geny/command"
+require "geny/registry"
 require "geny/actions/geny"
 
 RSpec.describe Geny::Actions::Geny do

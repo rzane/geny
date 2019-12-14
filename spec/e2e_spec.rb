@@ -1,4 +1,4 @@
-require "spec_helper"
+require "open3"
 
 RSpec.describe "exe/geny", :e2e do
   it "displays help with no arguments" do

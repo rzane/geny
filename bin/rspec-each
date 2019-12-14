@@ -1,0 +1,20 @@
+#!/bin/bash
+# Runs each spec file independently
+
+for spec in $(find spec -name "*_spec.rb*"); do
+  echo "Running $spec..."
+
+  until bundle exec rspec "$spec"; do
+    echo -n -e "\n$spec failed. Retry? "
+    read answer
+
+    if [ "$answer" != "${answer#[Yy]}" ]; then
+      echo "Retrying..."
+    else
+      echo "Aborting!"
+      exit
+    fi
+  done
+
+  echo "Success!"
+done

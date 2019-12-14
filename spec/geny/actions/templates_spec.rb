@@ -1,5 +1,6 @@
-require "geny/actions/templates"
+require "geny/command"
 require "geny/context/view"
+require "geny/actions/templates"
 
 RSpec.describe Geny::Actions::Templates do
   it "renders" do

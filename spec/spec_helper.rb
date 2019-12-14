@@ -5,6 +5,7 @@ end
 
 require "bundler/setup"
 require "geny"
+require "tmpdir"
 
 module Helpers
   def module_double(opts)

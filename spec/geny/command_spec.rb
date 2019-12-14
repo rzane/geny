@@ -1,5 +1,6 @@
 require "tmpdir"
 require "geny/command"
+require "geny/registry"
 
 RSpec.describe Geny::Command do
   let(:name) { "foo" }
@@ -25,7 +26,7 @@ RSpec.describe Geny::Command do
   end
 
   it "has a registry" do
-    expect(command.registry).to be_a(Geny::Registry)
+    expect(command.registry).not_to be_nil
   end
 
   it "has a file" do
