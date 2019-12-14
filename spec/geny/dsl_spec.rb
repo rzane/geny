@@ -18,6 +18,12 @@ RSpec.describe Geny::DSL do
     it "has a parser" do
       expect(dsl.parser).to be_an(Argy::Parser)
     end
+
+    it "is preconfigured to show help" do
+      expect {
+        dsl.parser.parse(["-h"])
+      }.to output(/FLAGS/).to_stdout.and raise_error(SystemExit)
+    end
   end
 
   describe "#parse" do

@@ -1,11 +1,23 @@
 require "geny/command"
+require "geny/registry"
 require "geny/context/invoke"
 
 RSpec.describe Geny::Context::Invoke do
   let(:locals) { {local: "local"} }
   let(:helpers) { [module_double(helper: "helper")] }
-  let(:command) { instance_double(Geny::Command, helpers: helpers, templates_path: "") }
-  subject(:context) { described_class.new(command: command, locals: locals) }
+  let(:registry) { instance_double(Geny::Registry) }
+  let(:command) {
+    instance_double(
+      Geny::Command,
+      helpers: helpers,
+      templates_path: "",
+      registry: registry
+    )
+  }
+
+  subject(:context) {
+    described_class.new(command: command, locals: locals)
+  }
 
   it "allows access to locals" do
     expect(context.local).to eq("local")
@@ -66,6 +78,18 @@ RSpec.describe Geny::Context::Invoke do
   describe "#git" do
     it "is a Geny::Actions::Git" do
       expect(context.git).to be_a(Geny::Actions::Git)
+    end
+  end
+
+  describe "#find" do
+    it "is a Geny::Actions::Find" do
+      expect(context.find).to be_a(Geny::Actions::Find)
+    end
+  end
+
+  describe "#geny" do
+    it "is a Geny::Actions::Geny" do
+      expect(context.geny).to be_a(Geny::Actions::Geny)
     end
   end
 end
