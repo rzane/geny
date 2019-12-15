@@ -23,7 +23,7 @@ module Geny
           next if path == root
 
           # Don't look any further into this directory
-          ::Find.prune if excluding && excluding.match?(excluding)
+          ::Find.prune if excluding && path.match?(excluding)
 
           # We don't care about directories
           next if File.directory?(path)
@@ -51,31 +51,27 @@ module Geny
       # @example
       #   find.rename("src", "Boilerplate", "YourProject")
       def rename(root, pattern, replacement, force: false, excluding: nil)
-        matches = []
-        options = {force: force, excluding: nil}
+        options = {force: force, excluding: excluding}
 
         ::Find.find(root) do |path|
           # The first emitted path will be the root directory
           next if path == root
 
           # Don't look any further into this directory
-          ::Find.prune if excluding && excluding.match?(excluding)
+          ::Find.prune if excluding && path.match?(excluding)
 
           # The path doesn't match, keep searching
           next unless path.match?(pattern)
 
-          # Record the match
-          matches << path
+          # The path matches, so rename it
+          dest = path.sub(pattern, replacement)
+          FileUtils.mv(path, dest, force: force)
 
-          # Don't search the children of the match, because it will
-          # be renamed. We'll have re-run against the renamed path
-          ::Find.prune
-        end
-
-        matches.each do |source|
-          dest = source.sub(pattern, replacement)
-          FileUtils.mv(source, dest, force: force)
+          # Find and rename the children of the path
           rename(dest, pattern, replacement, options) if File.directory?(dest)
+
+          # We already searched the directory's children, so we should stop
+          ::Find.prune
         end
       end
     end

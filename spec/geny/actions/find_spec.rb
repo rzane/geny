@@ -9,6 +9,14 @@ RSpec.describe Geny::Actions::Find do
       find.replace(tmp.to_s, "hello", "goodbye")
       expect(tmp.join("a.txt").read).to eq("goodbye")
     end
+
+    it "ignores excluded files" do
+      write "a.txt", "hello"
+      write "b.txt", "hello"
+      find.replace(tmp.to_s, "hello", "goodbye", excluding: /b/)
+      expect(tmp.join("a.txt").read).to eq("goodbye")
+      expect(tmp.join("b.txt").read).to eq("hello")
+    end
   end
 
   describe "#replace" do
@@ -16,6 +24,13 @@ RSpec.describe Geny::Actions::Find do
       write "hello.txt"
       find.rename(tmp.to_s, "hello", "goodbye")
       expect(entries).to match_array %w[goodbye.txt]
+    end
+
+    it "ignores excluded files" do
+      write "hello.txt"
+      write "hello-world.txt"
+      find.rename(tmp.to_s, "hello", "goodbye", excluding: /world/)
+      expect(entries).to match_array %w[goodbye.txt hello-world.txt]
     end
 
     it "replaces deeply nested matching filenames" do
