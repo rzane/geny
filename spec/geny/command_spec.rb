@@ -121,6 +121,11 @@ RSpec.describe Geny::Command do
       expect(options).to eq(value: 99, value?: true)
     end
 
+    it "is aware of the current __FILE__" do
+      write file, "invoke { print __FILE__ }"
+      expect { command.invoke }.to output(file).to_stdout
+    end
+
     it "raises when invoked with invalid options" do
       command.define do
         parse { option :value, required: true }

@@ -125,7 +125,7 @@ module Geny
       return @dsl if @dsl
 
       @dsl = DSL.new
-      @dsl.instance_eval File.read(file)
+      @dsl.instance_eval File.read(file), file
       @dsl
     end
   end
