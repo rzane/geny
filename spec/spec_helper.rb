@@ -1,9 +1,5 @@
-require "simplecov"
-SimpleCov.start do
-  add_filter "/spec/"
-end
-
 require "bundler/setup"
+require_relative "support/coverage"
 require "geny"
 require "tmpdir"
 

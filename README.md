@@ -1,4 +1,4 @@
-# Geny [![Build Status](https://travis-ci.org/rzane/geny.svg?branch=master)](https://travis-ci.org/rzane/geny)
+# Geny [![Build Status](https://travis-ci.org/rzane/geny.svg?branch=master)](https://travis-ci.org/rzane/geny) [![Coverage Status](https://coveralls.io/repos/github/rzane/geny/badge.svg?branch=master)](https://coveralls.io/github/rzane/geny?branch=master)
 
 A tool for building code generators.
 
