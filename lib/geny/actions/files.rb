@@ -77,6 +77,16 @@ module Geny
         TTY::File.chmod(path, coerce_mode(mode), *args)
       end
 
+      # @see #insert
+      def insert_before(path, pattern, content, **opts)
+        insert(path, content, before: pattern, **opts)
+      end
+
+      # @see #insert
+      def insert_after(path, pattern, content, **opts)
+        insert(path, content, after: pattern, **opts)
+      end
+
       private
 
       def coerce_mode(mode)

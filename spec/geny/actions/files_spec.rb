@@ -67,6 +67,22 @@ RSpec.describe Geny::Actions::Files do
     end
   end
 
+  describe "#insert_before" do
+    it "inserts before a matching line in a file" do
+      write file, "bye"
+      files.insert_before(file, /bye/, "hi", verbose: false)
+      expect(file.read).to eq("hibye")
+    end
+  end
+
+  describe "#insert_after" do
+    it "inserts after a matching line in a file" do
+      write file, "hi"
+      files.insert_after(file, /hi/, "bye", verbose: false)
+      expect(file.read).to eq("hibye")
+    end
+  end
+
   describe "#chmod" do
     it "chmods a file" do
       write file
