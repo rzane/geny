@@ -26,8 +26,6 @@ RSpec.describe Geny::Actions::Templates do
     end
 
     it "renders with helpers" do
-      write "hello.erb", "hello <%= name %>"
-
       helper = Module.new do
         def name
           "world"
@@ -41,8 +39,6 @@ RSpec.describe Geny::Actions::Templates do
     end
 
     it "renders with helpers and super" do
-      write "hello.erb", "hello <%= name %>"
-
       helper = Module.new do
         def name
           "#{super}!"
@@ -53,6 +49,20 @@ RSpec.describe Geny::Actions::Templates do
       templates = build(helpers: [helper])
       result = templates.render("hello.erb", locals: {name: "world"})
       expect(result).to eq("hello world!")
+    end
+
+    it "renders with capture and concat" do
+      helper = Module.new do
+        def hello(&block)
+          concat "hello #{capture(&block)}"
+          nil
+        end
+      end
+
+      write "hello.erb", "<% hello do %>world<% end %>"
+      templates = build(helpers: [helper])
+      result = templates.render("hello.erb")
+      expect(result).to eq("hello world")
     end
   end
 

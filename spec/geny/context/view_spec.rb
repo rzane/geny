@@ -18,7 +18,7 @@ RSpec.describe Geny::Context::View do
   it "tries to minimize the number of methods in scope" do
     actions = described_class.instance_methods
     actions -= Object.instance_methods
-    expect(actions.sort).to eq %i(command locals merge)
+    expect(actions.sort).to eq %i(capture command concat locals merge)
   end
 
   describe "#merge" do

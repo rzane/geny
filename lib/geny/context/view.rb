@@ -10,6 +10,23 @@ module Geny
       def merge(updates)
         View.new(command: command, locals: locals.merge(updates))
       end
+
+      # Append to the output buffer
+      def concat(data)
+        @output_buffer << data
+      end
+
+      # Capture the ERB rendered inside a block
+      def capture(*args, &block)
+        @output_buffer, buffer_was = "", @output_buffer
+
+        begin
+          block.call(*args)
+          block.binding.eval("@output_buffer")
+        ensure
+          @output_buffer = buffer_was
+        end
+      end
     end
   end
 end
