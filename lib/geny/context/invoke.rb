@@ -30,7 +30,7 @@ module Geny
       # A utility for interacting with files
       # @return [Actions::Files]
       def files
-        Actions::Files.new
+        Actions::Files.new(ui: ui)
       end
 
       # A utility for bulk find-and-replace operations

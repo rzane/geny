@@ -1,10 +1,12 @@
 require "geny/actions/files"
+require "geny/actions/ui"
 
 RSpec.describe Geny::Actions::Files do
   let(:file) { tmp.join("foo.txt") }
   let(:dir) { tmp.join("foo") }
+  let(:ui) { instance_double(Geny::Actions::UI, status: nil) }
 
-  subject(:files) { described_class.new }
+  subject(:files) { described_class.new(ui: ui) }
 
   describe "#create" do
     it "creates a file" do
@@ -80,6 +82,25 @@ RSpec.describe Geny::Actions::Files do
       write file, "hi"
       files.insert_after(file, /hi/, "bye", verbose: false)
       expect(file.read).to eq("hibye")
+    end
+  end
+
+  describe "#move" do
+    it "moves a file" do
+      write "foo.txt"
+      files.move(tmp.join("foo.txt"), tmp.join("bar.txt"), verbose: false)
+      expect(tmp.join("bar.txt")).to be_file
+      expect(tmp.join("foo.txt")).not_to be_file
+    end
+  end
+
+  describe "#chdir" do
+    it "changes directory" do
+      write "foo/bar.txt", "baz"
+      result = files.chdir(tmp.join("foo"), verbose: false) do
+        File.read("bar.txt")
+      end
+      expect(result).to eq("baz")
     end
   end
 

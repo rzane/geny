@@ -8,6 +8,10 @@ module Geny
     class Files
       extend Forwardable
 
+      def initialize(ui:)
+        @ui = ui
+      end
+
       # @!method create
       # Create a file
       # @see TTY::File.create
@@ -67,6 +71,31 @@ module Geny
       #   files.insert("Gemfile", "gem 'geny'", before: /gem 'rails'/)
       #   files.insert("Gemfile", "gem 'geny'", after: /gem 'rails'\n/)
       def_delegator TTY::File, :safe_inject_into_file, :insert
+
+      # Move a file
+      # @param source [String]
+      # @param dest [String]
+      #
+      # @example
+      #   files.move "Gemfile", "Gemfile.bak"
+      def move(source, dest, force: false, verbose: true)
+        @ui.status("move", source) if verbose
+        FileUtils.mv(source, dest, force: force)
+      end
+
+      # Change directory
+      # @param path [String]
+      #
+      # @example
+      #   files.chdir "foo" do
+      #     # do something inside foo/
+      #   end
+      def chdir(path, verbose: true, &block)
+        @ui.status("cd", path) if verbose
+        Dir.chdir(path, &block)
+      ensure
+        @ui.status("cd", "-") if verbose
+      end
 
       # Change the permissions of a file
       # @see TTY::File.chmod
