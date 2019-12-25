@@ -45,7 +45,7 @@ RSpec.describe "exe/geny", :e2e do
   end
 
   def execute(*args, raise_error: true, **opts)
-    out, status = Open3.capture2e(*args, chdir: tmp, **opts)
+    out, status = Open3.capture2e(*args, **opts)
     raise out if raise_error && !status.success?
     out
   end

@@ -1,9 +1,8 @@
-require "tmpdir"
 require "geny/cli"
 
 RSpec.describe Geny::CLI do
   let(:registry) {
-    Geny::Registry.new(load_path: [tmp.to_s])
+    Geny::Registry.new(load_path: [Dir.pwd])
   }
 
   subject(:cli) {

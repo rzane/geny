@@ -1,7 +1,7 @@
 require "bundler/setup"
 require_relative "support/coverage"
 require "geny"
-require "tmpdir"
+require "file_spec"
 
 module Helpers
   def module_double(opts)
@@ -15,28 +15,11 @@ module Helpers
     end
     mod
   end
-
-  def tmp
-    @tmp ||= Pathname.new(Dir.mktmpdir)
-  end
-
-  def purge_tmp
-    @tmp.rmtree if defined?(@tmp)
-  end
-
-  def write(filename, content = "")
-    path = tmp.join(filename)
-    path.parent.mkpath
-    path.write(content)
-  end
 end
 
 RSpec.configure do |config|
   config.include Helpers
-
-  config.after :each do
-    purge_tmp
-  end
+  config.include FileSpec
 
   config.around :each do |example|
     begin

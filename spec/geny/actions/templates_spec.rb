@@ -69,32 +69,30 @@ RSpec.describe Geny::Actions::Templates do
   describe "#copy" do
     it "copies a file" do
       write "hello.erb", "hello <%= name %>"
-      output = tmp.join("hello.txt")
 
       templates = build(locals: {name: "world"})
-      templates.copy("hello.erb", output, verbose: false)
+      templates.copy("hello.erb", "hello.txt", verbose: false)
 
-      expect(output).to be_file
-      expect(output.read).to eq("hello world")
+      expect("hello.txt").to be_a_file
+      expect("hello.txt").to have_content("hello world")
     end
   end
 
   describe "#copy_dir" do
     it "copies a directory" do
-      write "hello/%name%.txt.erb", "hello <%= name %>"
-      output = tmp.join("world.txt")
+      write "a/%name%.txt.erb", "hello <%= name %>"
 
       templates = build(locals: {name: "world"})
-      templates.copy_dir("hello", tmp, verbose: false)
+      templates.copy_dir("a", "b", verbose: false)
 
-      expect(output).to be_file
-      expect(output.read).to eq("hello world")
+      expect("b/world.txt").to be_a_file
+      expect("b/world.txt").to have_content("hello world")
     end
   end
 
   def build(locals: {}, helpers: [])
     command = instance_double(Geny::Command, helpers: helpers)
     view = Geny::Context::View.new(command: command, locals: locals)
-    Geny::Actions::Templates.new(root: tmp.to_s, view: view)
+    Geny::Actions::Templates.new(root: Dir.pwd, view: view)
   end
 end
