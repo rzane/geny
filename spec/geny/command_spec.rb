@@ -3,29 +3,25 @@ require "geny/command"
 require "geny/registry"
 
 RSpec.describe Geny::Command do
-  let(:name) { "foo" }
-  let(:root) { tmp.join("foo").to_s }
-  let(:file) { tmp.join("foo/generator.rb").to_s }
-  let(:templates) { tmp.join("foo/templates").to_s }
   let(:registry) { instance_double(Geny::Registry) }
 
   subject(:command) {
     Geny::Command.new(
-      name: name,
-      root: root,
+      name: "foo",
+      root: "foo",
       registry: registry
     )
   }
 
   describe "#name" do
     it "has a name" do
-      expect(command.name).to eq(name)
+      expect(command.name).to eq("foo")
     end
   end
 
   describe "#root" do
     it "has a root" do
-      expect(command.root).to eq(root)
+      expect(command.root).to eq("foo")
     end
   end
 
@@ -37,13 +33,13 @@ RSpec.describe Geny::Command do
 
   describe "#file" do
     it "has a file" do
-      expect(command.file).to eq(file)
+      expect(command.file).to eq("foo/generator.rb")
     end
   end
 
   describe "#templates" do
     it "has a templates_path" do
-      expect(command.templates_path).to eq(templates)
+      expect(command.templates_path).to eq("foo/templates")
     end
   end
 
@@ -61,7 +57,7 @@ RSpec.describe Geny::Command do
     end
 
     it "is loaded from a file" do
-      write file, "parse { description 'cool' }"
+      write "foo/generator.rb", "parse { description 'cool' }"
       expect(command.description).to eq("cool")
     end
   end
@@ -122,8 +118,8 @@ RSpec.describe Geny::Command do
     end
 
     it "is aware of the current __FILE__" do
-      write file, "invoke { print __FILE__ }"
-      expect { command.invoke }.to output(file).to_stdout
+      write "foo/generator.rb", "invoke { print __FILE__ }"
+      expect { command.invoke }.to output("foo/generator.rb").to_stdout
     end
 
     it "raises when invoked with invalid options" do

@@ -2,7 +2,7 @@ require "geny/registry"
 
 RSpec.describe Geny::Registry do
   subject(:registry) {
-    Geny::Registry.new(load_path: [tmp.to_s])
+    Geny::Registry.new(load_path: ["."])
   }
 
   before do
@@ -21,7 +21,7 @@ RSpec.describe Geny::Registry do
     it "finds a generator" do
       command = registry.find("a:b")
       expect(command.name).to eq("a:b")
-      expect(command.root).to eq(tmp.join("a/b").to_s)
+      expect(command.root).to eq("./a/b")
     end
 
     it "is nil when the generator is not found" do
@@ -33,7 +33,7 @@ RSpec.describe Geny::Registry do
     it "finds a generator" do
       command = registry.find!("a:b")
       expect(command.name).to eq("a:b")
-      expect(command.root).to eq(tmp.join("a/b").to_s)
+      expect(command.root).to eq("./a/b")
     end
 
     it "raises when the generator is not found" do
