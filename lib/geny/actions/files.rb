@@ -19,8 +19,17 @@ module Geny
       # @example
       #   files.create("test.txt")
       #   files.create("test.txt", "hello!")
-      #   files.remove("test.txt", force: true)
+      #   files.create("test.txt", force: true)
       def_delegator TTY::File, :create_file, :create
+
+      # @!method copy
+      # Copy a file
+      # @see TTY::File.copy
+      #
+      # @example
+      #   files.copy("foo.txt", "bar.txt")
+      #   files.copy("foo.txt", "bar.txt", force: true)
+      def_delegator TTY::File, :copy_file, :copy
 
       # @!method create_dir
       # Create a directory recursively
@@ -29,6 +38,15 @@ module Geny
       # @example
       #   files.create_dir("app/controllers")
       def_delegator TTY::File, :create_dir
+
+      # @!method copy_dir
+      # Copy a directory recursively
+      # @see TTY::File.copy_dir
+      #
+      # @example
+      #   files.copy_dir("foo", "bar")
+      #   files.copy_dir("foo", "bar", force: true)
+      def_delegator TTY::File, :copy_dir
 
       # @!method remove
       # Remove a file

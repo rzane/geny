@@ -14,18 +14,37 @@ RSpec.describe Geny::Actions::Files do
     end
   end
 
+  describe "#copy" do
+    it "copies a file" do
+      write "foo.txt", "hi"
+      files.copy("foo.txt", "bar.txt", verbose: false)
+      expect("bar.txt").to be_a_file
+      expect("bar.txt").to have_content("hi")
+    end
+  end
+
+  describe "#create_dir" do
+    it "creates a dir" do
+      files.create_dir("foo", verbose: false)
+      expect("foo").to be_a_directory
+    end
+  end
+
+  describe "#copy_dir" do
+    it "copies a dir" do
+      write "a/test.txt", "hi"
+      files.copy_dir("a", "b", verbose: false)
+      expect("b").to be_a_directory
+      expect("b/test.txt").to be_a_file
+      expect("b/test.txt").to have_content("hi")
+    end
+  end
+
   describe "#remove" do
     it "removes a file" do
       write "foo.txt"
       files.remove("foo.txt", verbose: false)
       expect("foo.txt").not_to be_a_file
-    end
-  end
-
-  describe "#create" do
-    it "creates a dir" do
-      files.create_dir("foo", verbose: false)
-      expect("foo").to be_a_directory
     end
   end
 
