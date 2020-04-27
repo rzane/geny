@@ -27,11 +27,11 @@ Gem::Specification.new do |spec|
   spec.add_dependency "argy", "~> 0.2.2"
   spec.add_dependency "pastel", "~> 0.7.3"
   spec.add_dependency "tty-file", "~> 0.8.0"
-  spec.add_dependency "tty-prompt", "~> 0.20.0"
+  spec.add_dependency "tty-prompt", "~> 0.21.0"
 
   spec.add_development_dependency "bundler", "~> 2.0"
-  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "simplecov", "~> 0.17.1"
+  spec.add_development_dependency "simplecov", "~> 0.18.5"
   spec.add_development_dependency "file_spec", "~> 0.1.0"
 end
