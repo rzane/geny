@@ -14,9 +14,6 @@ jobs:
         with:
           ruby-version: 2.7.x
 
-      - name: Install packages
-        run: sudo apt-get install git
-
       - name: Install bundler
         run: gem install bundler
 

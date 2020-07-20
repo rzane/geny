@@ -3,7 +3,7 @@ require "geny/actions/shell"
 require "geny/actions/ui"
 
 RSpec.describe Geny::Actions::Git do
-  let(:ui) { instance_double(Geny::Actions::UI) }
+  let(:ui) { instance_double(Geny::Actions::UI, status: nil) }
   let(:shell) { Geny::Actions::Shell.new(ui: ui) }
   subject(:git) { described_class.new(shell: shell) }
 
@@ -27,6 +27,7 @@ RSpec.describe Geny::Actions::Git do
     it "commits added files" do
       write "foo.txt"
       git.init verbose: false
+      git_configure
       git.add verbose: false
       git.commit verbose: false, message: "success"
       expect(last_commit_message).to eq("success\n")
@@ -46,5 +47,10 @@ RSpec.describe Geny::Actions::Git do
 
   def last_commit_message
     shell.capture("git log -1 --pretty=%B")
+  end
+
+  def git_configure
+    shell.run("git config user.name 'Rick Flair'")
+    shell.run("git config user.email rick@example.com")
   end
 end
