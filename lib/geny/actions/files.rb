@@ -121,7 +121,7 @@ module Geny
       # @example
       #   files.chmod("bin/test", "+x")
       def chmod(path, mode, *args)
-        TTY::File.chmod(path, coerce_mode(mode), *args)
+        TTY::File.chmod(path, mode, *args)
       end
 
       # @see #insert
@@ -132,16 +132,6 @@ module Geny
       # @see #insert
       def insert_after(path, pattern, content, **opts)
         insert(path, content, after: pattern, **opts)
-      end
-
-      private
-
-      def coerce_mode(mode)
-        if mode.respond_to?(:match?) && mode.match?(/^[+-]/)
-          "a#{mode}"
-        else
-          mode
-        end
       end
     end
   end
