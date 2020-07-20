@@ -1,3 +1,3 @@
 module Geny
-  VERSION = "2.5.0"
+  VERSION = "0.0.0"
 end
