@@ -23,7 +23,7 @@ module Geny
       #   templates.copy("hello.erb", "hello.txt", locals: {name: "world"})
       def copy(source, *args, **opts)
         source = expand_path(source)
-        context, opts = build_context(opts)
+        context, opts = build_context(**opts)
         TTY::File.copy_file(source, *args, context: context, **opts)
       end
 
@@ -36,7 +36,7 @@ module Geny
       #   templates.copy_dir("boilerplate", output, locals: {name: "world"})
       def copy_dir(source, *args, **opts)
         source = expand_path(source)
-        context, opts = build_context(opts)
+        context, opts = build_context(**opts)
         TTY::File.copy_dir(source, *args, context: context, **opts)
       end
 
@@ -49,7 +49,7 @@ module Geny
       def render(path, **opts)
         path = expand_path(path)
         input = File.binread(path)
-        context, _opts = build_context(opts)
+        context, _opts = build_context(**opts)
         erb = ERB.new(input, nil, "-", "@output_buffer")
         erb.result(context.instance_eval("binding"))
       end

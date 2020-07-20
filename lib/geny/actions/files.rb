@@ -120,8 +120,8 @@ module Geny
       #
       # @example
       #   files.chmod("bin/test", "+x")
-      def chmod(path, mode, *args)
-        TTY::File.chmod(path, mode, *args)
+      def chmod(path, mode, *args, **opts)
+        TTY::File.chmod(path, mode, *args, **opts)
       end
 
       # @see #insert

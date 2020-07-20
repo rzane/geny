@@ -34,14 +34,14 @@ RSpec.describe "exe/geny", :e2e do
     expect(geny("show:message", "hello", "-l")).to eq("HELLO\n")
   end
 
-  def geny(*args)
-    bundle_exec(File.expand_path("../exe/geny", __dir__), *args)
+  def geny(*args, **opts)
+    bundle_exec(File.expand_path("../exe/geny", __dir__), *args, **opts)
   end
 
-  def bundle_exec(*args)
+  def bundle_exec(*args, **opts)
     gemfile = File.expand_path("../Gemfile", __dir__)
     env = ENV.to_h.merge('BUNDLE_GEMFILE' => gemfile)
-    execute(env, "bundle", "exec", *args)
+    execute(env, "bundle", "exec", *args, **opts)
   end
 
   def execute(*args, raise_error: true, **opts)

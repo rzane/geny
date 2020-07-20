@@ -68,7 +68,7 @@ module Geny
           FileUtils.mv(path, dest, force: force)
 
           # Find and rename the children of the path
-          rename(dest, pattern, replacement, options) if File.directory?(dest)
+          rename(dest, pattern, replacement, **options) if File.directory?(dest)
 
           # We already searched the directory's children, so we should stop
           ::Find.prune
