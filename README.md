@@ -4,7 +4,6 @@
 
 ![Build](https://github.com/rzane/geny/workflows/Build/badge.svg)
 ![Version](https://img.shields.io/gem/v/geny)
-[![Coverage Status](https://coveralls.io/repos/github/rzane/geny/badge.svg?branch=master)](https://coveralls.io/github/rzane/geny?branch=master)
 
 </div>
 
