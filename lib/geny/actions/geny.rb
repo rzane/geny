@@ -27,7 +27,7 @@ module Geny
       #   geny.invoke "rails:model", name: "User"
       def invoke(name, **options)
         command = @registry.find!(name)
-        command.invoke(options)
+        command.invoke(**options)
       end
     end
   end
