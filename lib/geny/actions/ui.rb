@@ -10,7 +10,7 @@ module Geny
       # Create a new UI
       # @param color [Pastel]
       def initialize(color:, **opts)
-        super(opts)
+        super(**opts)
         @color = color
       end
 
